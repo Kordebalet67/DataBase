@@ -20,7 +20,7 @@ class Students(models.Model):
     course = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.surname
+        return "%s %s course %s" % (self.surname, self.name, self.course)
 
     class Meta:
         verbose_name = 'Student'
