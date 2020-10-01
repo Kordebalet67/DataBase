@@ -18,12 +18,21 @@ def mainpage(request):
 
 
 def course(request):
+    form = CourseForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        data = form.cleaned_data
+        courses = Courses.objects.filter(course=data["course"])
+
+        return render(request, 'results/rescourse.html', locals())
+
     return render(request, 'search/scourse.html', locals())
 
 
 def name(request):
     form = StudentForm(request.POST or None)
-    if request.method == "POST":
+    if request.method == "POST" and form.is_valid():
+        data = form.cleaned_data
+        students = Students.objects.filter(surname=data["surname"])
 
         return render(request, 'results/resname.html', locals())
 
@@ -31,8 +40,10 @@ def name(request):
 
 
 def rescourse(request):
+    courses = Courses.objects.all()
     return render(request, 'results/rescourse.html', locals())
 
 
 def resname(request):
+    students = Students.objects.all()
     return render(request, 'results/resname.html', locals())

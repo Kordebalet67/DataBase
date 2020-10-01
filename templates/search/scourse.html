@@ -15,6 +15,14 @@
     <div class="row">
         <div class="col-lg-4 col-lg-offset-4">
             <h1 class="title">Search by course</h1>
+            <div>
+                <form action="" method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                    <div>
+                        <button type="submit" class="btn1 btn btn-primary">Search</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -22,6 +30,11 @@
 <form action="../main/mainPage.html">
     <div>
         <button type="submit" class="btn2 btn btn-primary">mainPage</button>
+    </div>
+</form>
+<form action="../results/rescourse.html">
+    <div>
+        <button type="submit" class="btn5 btn btn-primary">Show all courses</button>
     </div>
 </form>
 
