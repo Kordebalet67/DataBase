@@ -1,5 +1,15 @@
 from django.shortcuts import render
 from .forms import *
+import mysql.connector
+
+data_base = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="root",
+    database="npo",
+)
+
+mycoursor = data_base.cursor()
 
 
 def auth(request):
@@ -47,3 +57,21 @@ def rescourse(request):
 def resname(request):
     students = Students.objects.all()
     return render(request, 'results/resname.html', locals())
+
+
+def insert(request):
+    insert_form = Ext_Students_Form(request.POST or None)
+    if request.method == "POST" and insert_form.is_valid():
+        data = insert_form.cleaned_data
+
+        sql = "insert into students (surname, name, middle_name, work_position, diplom, contract_expire, education_year) values (%s, %s, %s, %s, %s, %s, %s)"
+        val = (data["surname"], data["name"], data["middle_name"], data["work_position"], data["diplom"],
+               data["contract_expire"], data["education_year"])
+        mycoursor.execute(sql, val)
+        data_base.commit()
+
+        sql = "SELECT * FROM name_table"
+
+        print(mycoursor.rowcount, "record inserted")
+        return render(request, 'insert/insert.html', locals())
+    return render(request, 'insert/insert.html', locals())

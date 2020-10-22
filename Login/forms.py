@@ -18,3 +18,15 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = Courses
         exclude = [""]
+
+
+class Ext_Students_Form(forms.ModelForm):
+    class Meta:
+        model = Ext_Students
+        fields = ["surname", "name", "middle_name", "work_position", "diplom", "education_year", "contract_expire"]
+
+
+class Education_Form(forms.ModelForm):
+    class Meta:
+        model = Education
+        exclude = [""]
