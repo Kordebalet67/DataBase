@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Login/views.py">
 
 
 </head>
@@ -15,13 +16,15 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-4 col-lg-offset-4">
-            <h1 class="title">Добавление нового студента</h1>
+            <h1 class="title">Adding a new student</h1>
             <div>
                 <form action="" method="post">{% csrf_token %}
-                    {{ insert_form.as_p }}
-                    {{   }}
+                    <div>{{ insert_form.as_p }}</div>
                     <div>
-                        <button type="submit" class="btn1 btn btn-primary">Добавить</button>
+                        <form action="" method="post">{% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="submit" value="Confirm and add" class="btn1 btn btn-primary"/>
+                        </form>
                     </div>
                 </form>
             </div>

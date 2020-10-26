@@ -1,4 +1,19 @@
 from django.db import models
+import mysql.connector
+import pymysql
+
+data_base = pymysql.connect(
+    host="localhost",
+    user="root",
+    password="root",
+    db="npo",
+    cursorclass=pymysql.cursors.SSDictCursor
+)
+
+mycoursor = data_base.cursor()
+mycoursor.execute("SELECT * FROM chair")
+chair = mycoursor.fetchall()
+mycoursor.execute("SELECT * FROM academy_rank")
 
 
 class Users(models.Model):
@@ -40,9 +55,18 @@ class Courses(models.Model):
 
 # описание моделей словарей
 
+list_chair = []
+for i in range(len(chair)):  # запихиваем ёбанные значения из списка словарей в список ёбанных кортежей
+    list_chair.append((chair[i]["id"], chair[i]["chair_name"]))
+
+
+# print(chair[0]["chair_name"])  # самая важная хуйня во всём коде. из мускла сюда приходит список словарей. ИПАНУЦЦА
+# print(list_chair)
+
+
 class Chair(models.Model):
     id = models.IntegerField(primary_key=True)
-    chair_name = models.TextField(max_length=45)
+    chair_name = models.CharField(max_length=100, choices=list_chair, default=chair[0])
 
     def __str__(self):
         return self.chair_name

@@ -23,10 +23,27 @@ class CourseForm(forms.ModelForm):
 class Ext_Students_Form(forms.ModelForm):
     class Meta:
         model = Ext_Students
-        fields = ["surname", "name", "middle_name", "work_position", "diplom", "education_year", "contract_expire"]
+        exclude = ["id"]
+        # fields = ["surname", "name", "middle_name", "work_position", "diplom", "education_year", "contract_expire", ]
 
 
 class Education_Form(forms.ModelForm):
     class Meta:
         model = Education
-        exclude = [""]
+        exclude = ["id"]
+
+
+class Academy_rank_form(forms.ModelForm):
+    model = forms.MultipleChoiceField(choices=Academy_rank.objects.all())
+    exclude = ["id"]
+
+
+class PHD_form(forms.ModelForm):
+    model = forms.MultipleChoiceField(choices=PHD.objects.all())
+    exclude = ["id"]
+
+
+class Chair_form(forms.ModelForm):
+    class Meta:
+        model = Chair
+        fields = ['chair_name']

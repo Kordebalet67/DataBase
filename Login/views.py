@@ -61,17 +61,20 @@ def resname(request):
 
 def insert(request):
     insert_form = Ext_Students_Form(request.POST or None)
+    form = Chair_form
     if request.method == "POST" and insert_form.is_valid():
-        data = insert_form.cleaned_data
+        data = insert_form.cleaned_data  # принимаем значение с ёбанной заполняемой формы
+        chosen_chair = request.POST.get('chair_name')  # принимаем значение с ёбанного выпадающего списка
+        print(chair)
 
-        sql = "insert into students (surname, name, middle_name, work_position, diplom, contract_expire, education_year) values (%s, %s, %s, %s, %s, %s, %s)"
+        sql = "insert into npo.students (surname, name, middle_name, work_position, diplom, contract_expire, education_year, chair) " \
+              "values (%s, %s, %s, %s, %s, %s, %s, %s)"
         val = (data["surname"], data["name"], data["middle_name"], data["work_position"], data["diplom"],
-               data["contract_expire"], data["education_year"])
+               data["contract_expire"], data["education_year"], chosen_chair)
         mycoursor.execute(sql, val)
         data_base.commit()
 
-        sql = "SELECT * FROM name_table"
-
         print(mycoursor.rowcount, "record inserted")
+        insert_form.full_clean()
         return render(request, 'insert/insert.html', locals())
     return render(request, 'insert/insert.html', locals())
