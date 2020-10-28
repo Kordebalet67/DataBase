@@ -1,29 +1,33 @@
-.btn2{
+.title {
+    color: #06869a;
+}
+
+.btn2 {
     position: absolute;
     left: 30px;
     top: 50px;
 }
 
 
-.btn1{
+.btn1 {
     display: inline;
     position: relative;
     top: 30px;
 }
 
-.btn3{
+.btn3 {
     display: inline;
     position: relative;
     top: 30px;
 }
 
-.btn4{
+.btn4 {
     display: inline;
     position: relative;
     top: 30px;
 }
 
-.btn5{
+.btn5 {
     position: relative;
     left: 30px;
     top: 100px;

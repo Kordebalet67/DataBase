@@ -34,13 +34,15 @@ class Education_Form(forms.ModelForm):
 
 
 class Academy_rank_form(forms.ModelForm):
-    model = forms.MultipleChoiceField(choices=Academy_rank.objects.all())
-    exclude = ["id"]
+    class Meta:
+        model = Academy_rank
+        fields = ['academy_rank_name']
 
 
 class PHD_form(forms.ModelForm):
-    model = forms.MultipleChoiceField(choices=PHD.objects.all())
-    exclude = ["id"]
+    class Meta:
+        model = PHD
+        fields = ['phd_name']
 
 
 class Chair_form(forms.ModelForm):

@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.utils import http
+from django import http
 from .forms import *
 import mysql.connector
 
@@ -61,20 +63,24 @@ def resname(request):
 
 def insert(request):
     insert_form = Ext_Students_Form(request.POST or None)
-    form = Chair_form
+    chair_form = Chair_form
+    phd_form = PHD_form
+    academy_rank_form = Academy_rank_form
+
     if request.method == "POST" and insert_form.is_valid():
         data = insert_form.cleaned_data  # принимаем значение с ёбанной заполняемой формы
-        chosen_chair = request.POST.get('chair_name')  # принимаем значение с ёбанного выпадающего списка
-        print(chair)
+        chosen_chair = request.POST.get('chair_name')  # принимаем значение с ёбанного выпадающего списка №1
+        chosen_academy_rank = request.POST.get('academy_rank_name')  # значение с ёбанного выпадающего списка №2
+        chosen_phd = request.POST.get('phd_name')  # значение с ёбанного выпадающего списка №3
 
-        sql = "insert into npo.students (surname, name, middle_name, work_position, diplom, contract_expire, education_year, chair) " \
-              "values (%s, %s, %s, %s, %s, %s, %s, %s)"
+        sql = "insert into npo.students (surname, name, middle_name, work_position, diplom, contract_expire, education_year, chair, phd, academy_rank) " \
+              "values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = (data["surname"], data["name"], data["middle_name"], data["work_position"], data["diplom"],
-               data["contract_expire"], data["education_year"], chosen_chair)
+               data["contract_expire"], data["education_year"], chosen_chair, chosen_phd, chosen_academy_rank)
         mycoursor.execute(sql, val)
         data_base.commit()
 
         print(mycoursor.rowcount, "record inserted")
-        insert_form.full_clean()
-        return render(request, 'insert/insert.html', locals())
+        insert_form.clean()
+        return http.HttpResponseRedirect('')
     return render(request, 'insert/insert.html', locals())

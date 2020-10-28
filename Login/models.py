@@ -14,6 +14,9 @@ mycoursor = data_base.cursor()
 mycoursor.execute("SELECT * FROM chair")
 chair = mycoursor.fetchall()
 mycoursor.execute("SELECT * FROM academy_rank")
+academy_rank = mycoursor.fetchall()
+mycoursor.execute("SELECT * FROM phd")
+phd = mycoursor.fetchall()
 
 
 class Users(models.Model):
@@ -53,11 +56,19 @@ class Courses(models.Model):
         verbose_name_plural = 'Courses'
 
 
-# описание моделей словарей
+# описание моделей словарей для таблицы students
 
 list_chair = []
 for i in range(len(chair)):  # запихиваем ёбанные значения из списка словарей в список ёбанных кортежей
     list_chair.append((chair[i]["id"], chair[i]["chair_name"]))
+
+list_academy_rank = []
+for i in range(len(academy_rank)):  # запихиваем ёбанные значения из списка словарей в список ёбанных кортежей
+    list_academy_rank.append((academy_rank[i]["id"], academy_rank[i]["academy_rank_name"]))
+
+list_phd = []
+for i in range(len(phd)):  # запихиваем ёбанные значения из списка словарей в список ёбанных кортежей
+    list_phd.append((phd[i]["id"], phd[i]["phd_name"]))
 
 
 # print(chair[0]["chair_name"])  # самая важная хуйня во всём коде. из мускла сюда приходит список словарей. ИПАНУЦЦА
@@ -66,12 +77,29 @@ for i in range(len(chair)):  # запихиваем ёбанные значен�
 
 class Chair(models.Model):
     id = models.IntegerField(primary_key=True)
-    chair_name = models.CharField(max_length=100, choices=list_chair, default=chair[0])
+    chair_name = models.CharField(max_length=100, choices=list_chair, default=None)
 
     def __str__(self):
         return self.chair_name
 
 
+class PHD(models.Model):
+    id = models.IntegerField(primary_key=True)
+    phd_name = models.CharField(max_length=100, choices=list_phd, default=None)
+
+    def __str__(self):
+        return self.phd_name
+
+
+class Academy_rank(models.Model):
+    id = models.IntegerField(primary_key=True)
+    academy_rank_name = models.CharField(max_length=100, choices=list_academy_rank, default=None)
+
+    def __str__(self):
+        return self.academy_rank_name
+
+
+# описание моделей словарей для таблицы university
 class Realization_form(models.Model):
     id = models.IntegerField(primary_key=True)
     realization_form_name = models.TextField(max_length=511)
@@ -94,22 +122,6 @@ class University(models.Model):
 
     def __str__(self):
         return self.university_name
-
-
-class PHD(models.Model):
-    id = models.IntegerField(primary_key=True)
-    phd_name = models.TextField(max_length=127)
-
-    def __str__(self):
-        return self.phd_name
-
-
-class Academy_rank(models.Model):
-    id = models.IntegerField(primary_key=True)
-    academy_rank_name = models.TextField(max_length=45)
-
-    def __str__(self):
-        return self.academy_rank_name
 
 
 # описание главных моделей
