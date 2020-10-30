@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'^results/rescourse.html', views.rescourse, name='Results of searching by course'),
     url(r'^results/resname.html', views.resname, name='Results of searching by name'),
     url(r'^insert/insert.html', views.insert, name='Insert'),
+    url(r'^base', views.base, name='Base'),
+    url(r'^educ', views.insert_education, name='Education'),
     url(r'^', views.auth, name='authorization'),
 
 ]

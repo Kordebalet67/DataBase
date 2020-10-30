@@ -2,18 +2,6 @@
     color: #06869a;
 }
 
-.btn2 {
-    position: absolute;
-    left: 30px;
-    top: 50px;
-}
-
-
-.btn1 {
-    display: inline;
-    position: relative;
-    top: 30px;
-}
 
 .btn3 {
     display: inline;
@@ -31,5 +19,196 @@
     position: relative;
     left: 30px;
     top: 100px;
+}
+
+.container {
+    position: absolute;
+    top: 60px
+}
+
+.footer {
+    position: fixed;
+    bottom: 0
+}
+
+.navbar {
+    position: fixed;
+    top: 0
+}
+
+
+.btn2 {
+    position: absolute;
+    left: 30px;
+    top: 50.5px;
+    width: 102px;
+}
+
+
+.btn1 {
+    display: inline;
+    position: relative;
+    top: 0px;
+    width: 265px;
+    left: 1px;
+    margin-top: 10px;
+}
+
+.btn3 {
+    display: inline;
+    position: relative;
+    top: 89px;
+    right: 405px;
+    width: 200px;
+}
+
+.btn4 {
+    display: inline;
+    position: relative;
+    top: 48px;
+    right: 175px;
+    width: 200px;
+}
+
+.btn5 {
+    position: absolute;
+    left: 155px;
+    top: 50.5px;
+    width: 102px;
+}
+
+.btn6 {
+    position: absolute;
+    width: 140px;
+    top: 204px;
+}
+
+.btn7 {
+    display: inline;
+    top: 194px;
+    position: absolute;
+    width: 140px;
+    left: 621px;
+    margin-top: 10px;
+}
+
+.btn8 {
+    position: absolute;
+    left: 30px;
+    top: 50px;
+}
+
+.btn9 {
+    display: inline;
+    position: absolute;
+    top: 119px;
+    width: 150px;
+    left: 593px;
+}
+
+.btn10 {
+    display: inline;
+    position: relative;
+    top: 10px;
+    width: 120px;
+    left: 1px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 10px 12px;
+}
+
+.rowust {
+    width: 300px;
+    height: 30px;
+}
+
+#id_surname {
+    width: 300px;
+    height: 30px;
+}
+
+#id_name {
+    width: 300px;
+    height: 30px;
+}
+
+#id_middle_name {
+    width: 300px;
+    height: 30px;
+}
+
+#id_work_position {
+    width: 300px;
+    height: 60px;
+}
+
+#id_diplom {
+    width: 300px;
+    height: 60px;
+}
+
+#id_university_text {
+    width: 300px;
+    height: 60px;
+}
+
+#id_course_name {
+    width: 300px;
+    height: 30px;
+}
+
+#id_login {
+    margin-left: 11px;
+    width: 186px;
+}
+
+#id_password {
+    width: 186px;
+}
+
+#id_course {
+    width: 225px;
+    height: 30px;
+}
+
+table.courseTable {
+    align-content: center;
+    width: 80%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    height: auto;
+}
+
+table.courseTable, table.courseTable td, table.courseTable th {
+    border: 1px solid #595959;
+}
+
+table.courseTable td, table.courseTable th {
+    padding: 3px;
+    width: 30px;
+    height: 35px;
+}
+
+
+table.studentTable {
+    padding: 10px;
+    align-content: center;
+    width: 80%;
+    border-collapse: collapse;
+    border-spacing: 10px;
+    height: auto;
+}
+
+table.studentTable, table.studentTable td, table.studentTable th {
+    border: 1px solid #595959;
+    padding: 1px;
+}
+
+table.studentTable td, table.studentTable th {
+    height: 35px;
+    width: 150px;
+    padding: 5px;
 }
 

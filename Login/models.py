@@ -17,6 +17,12 @@ mycoursor.execute("SELECT * FROM academy_rank")
 academy_rank = mycoursor.fetchall()
 mycoursor.execute("SELECT * FROM phd")
 phd = mycoursor.fetchall()
+mycoursor.execute("SELECT * FROM course_type")
+course_type = mycoursor.fetchall()
+mycoursor.execute("SELECT * FROM realisation_form")
+realisation_form = mycoursor.fetchall()
+mycoursor.execute("SELECT * FROM university")
+university = mycoursor.fetchall()
 
 
 class Users(models.Model):
@@ -99,10 +105,23 @@ class Academy_rank(models.Model):
         return self.academy_rank_name
 
 
-# описание моделей словарей для таблицы university
+# описание моделей словарей для таблицы education
+list_university = []
+for i in range(len(university)):  # запихиваем ёбанные значения из списка словарей в список ёбанных кортежей
+    list_university.append((university[i]["id"], university[i]["university_name"]))
+
+list_course_type = []
+for i in range(len(course_type)):  # запихиваем ёбанные значения из списка словарей в список ёбанных кортежей
+    list_course_type.append((course_type[i]["id"], course_type[i]["course_type_name"]))
+
+list_realisation_form = []
+for i in range(len(realisation_form)):  # запихиваем ёбанные значения из списка словарей в список ёбанных кортежей
+    list_realisation_form.append((realisation_form[i]["id"], realisation_form[i]["realisation_form_name"]))
+
+
 class Realization_form(models.Model):
     id = models.IntegerField(primary_key=True)
-    realization_form_name = models.TextField(max_length=511)
+    realization_form_name = models.CharField(max_length=100, choices=list_realisation_form, default=None)
 
     def __str__(self):
         return self.realization_form_name
@@ -110,7 +129,7 @@ class Realization_form(models.Model):
 
 class Course_type(models.Model):
     id = models.IntegerField(primary_key=True)
-    course_type_name = models.TextField(max_length=511)
+    course_type_name = models.CharField(max_length=100, choices=list_course_type, default=None)
 
     def __str__(self):
         return self.course_type_name
@@ -118,7 +137,7 @@ class Course_type(models.Model):
 
 class University(models.Model):
     id = models.IntegerField(primary_key=True)
-    university_name = models.TextField(max_length=511)
+    university_name = models.CharField(max_length=100, choices=list_university, default=None)
 
     def __str__(self):
         return self.university_name
@@ -146,16 +165,16 @@ class Ext_Students(models.Model):
 
 class Education(models.Model):
     id = models.IntegerField(primary_key=True)
+    university_text = models.TextField(max_length=511)
+    course_name = models.TextField(max_length=511)
+    course_start = models.DateField()
+    course_end = models.DateField()
+    info = models.TextField(max_length=1023)
+    realisation_form = Realization_form
+    chair = Chair
     student = Ext_Students
     course = Course_type
     university = University
-    university_text = models.TextField(max_length=511)
-    course_name = models.TextField(max_length=511)
-    course_start = models.DateField
-    course_end = models.DateField
-    realisation_form = Realization_form
-    chair = Chair
-    info = models.TextField(max_length=1023)
 
     def __str__(self):
         return "%s %s %s" % (self.course_name, self.course_start, self.course_end)
