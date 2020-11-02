@@ -2,6 +2,22 @@
     color: #06869a;
 }
 
+.container {
+    position: absolute;
+    top: 60px;
+    bottom: 60px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0
+}
+
+.navbar {
+    position: fixed;
+    top: 0
+}
+
 
 .btn3 {
     display: inline;
@@ -19,21 +35,6 @@
     position: relative;
     left: 30px;
     top: 100px;
-}
-
-.container {
-    position: absolute;
-    top: 60px
-}
-
-.footer {
-    position: fixed;
-    bottom: 0
-}
-
-.navbar {
-    position: fixed;
-    top: 0
 }
 
 

@@ -55,16 +55,6 @@ def name(request):
     return render(request, 'search/sname.html', locals())
 
 
-def rescourse(request):
-    courses = Courses.objects.all()
-    return render(request, 'results/rescourse.html', locals())
-
-
-def resname(request):
-    students = Students.objects.all()
-    return render(request, 'results/resname.html', locals())
-
-
 def insert_education(request):
     # перечисляем ёбанные формы для заполнения. 2 формы - с обычными текстовыми полями
     insert_form = Ext_Students_Form(request.POST or None)
@@ -117,6 +107,11 @@ def insert_education(request):
     return render(request, 'insert/insert_education.html', locals())
 
 
+def search(request):
+    return render(request, 'search/search.html', locals())
+
+
+# этот фрагмент отжил своё. но как работающий образец должен остаться
 def insert(request):
     insert_form = Ext_Students_Form(request.POST or None)
     chair_form = Chair_form

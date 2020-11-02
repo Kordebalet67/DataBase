@@ -1,26 +1,19 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>Inserting</title>
+    <title>Searching</title>
 {% endblock title %}
 
-
 {% block content %}
-    <h1 style="color: #06869a" >Inserting information about education</h1>
+    <h1 style="color: #06869a" >Searching information in database</h1>
     <div class="container">
         <div class="col-lg-4 col-lg-offset-8">
             <div>
                 <form style="color: #06869a" action="" method="post">{% csrf_token %}
-                    <div>{{ insert_form.as_p }}</div>
-                    <div>{{ education_form.as_p }}</div>
+
                     <div>
                         <form action="" method="post">{% csrf_token %}
-                            {{ chair_form.as_p }}
-                            {{ phd_form.as_p }}
-                            {{ academy_rank_form.as_p }}
-                            {{ university_form.as_p }}
-                            {{ course_type_form.as_p }}
-                            {{ realisation_form_form.as_p }}
+
                             <input type="submit" value="Confirm and add" class="btn1 btn btn-primary"/>
                         </form>
                     </div>
