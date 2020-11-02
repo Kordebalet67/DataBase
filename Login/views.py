@@ -20,13 +20,13 @@ def auth(request):
 
         data = form.cleaned_data
         if data["login"] == "user" and data["password"] == "Qwerty":
-            return render(request, 'main/mainPage.html', locals())
+            return render(request, 'main/main.html', locals())
 
     return render(request, 'auth/auth.html', locals())
 
 
 def mainpage(request):
-    return render(request, 'main/mainPage.html', locals())
+    return render(request, 'main/main.html', locals())
 
 
 def base(request):

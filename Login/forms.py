@@ -4,6 +4,8 @@ from .models import *
 
 # тестовые формы, которые НЕ интересуют
 class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
     class Meta:
         model = Users
         exclude = [""]

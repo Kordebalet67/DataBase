@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>Inserting</title>
+    <title>Добавление</title>
 {% endblock title %}
 
 
 {% block content %}
-    <h1 style="color: #06869a" >Inserting information about education</h1>
+    <h1 style="color: #06869a" >Добавление новой информации о человеке</h1>
     <div class="container">
         <div class="col-lg-4 col-lg-offset-8">
             <div>
@@ -15,12 +15,18 @@
                     <div>{{ education_form.as_p }}</div>
                     <div>
                         <form action="" method="post">{% csrf_token %}
-                            {{ chair_form.as_p }}
-                            {{ phd_form.as_p }}
-                            {{ academy_rank_form.as_p }}
-                            {{ university_form.as_p }}
-                            {{ course_type_form.as_p }}
-                            {{ realisation_form_form.as_p }}
+                            <label>ВУЗ: </label>
+                            {{ university_form.university_name }}
+                            <label>Кафедра: </label>
+                            {{ chair_form.chair_name }}
+                            <label>Учёная степень: </label>
+                            {{ phd_form.phd_name }}
+                            <label>Учёное звание: </label>
+                            {{ academy_rank_form.academy_rank_name }}
+                            <label>Форма обучения: </label>
+                            {{ course_type_form.course_type_name }}
+                            <label>Форма реализации: </label>
+                            {{ realisation_form_form.realization_form_name}}
                             <input type="submit" value="Confirm and add" class="btn1 btn btn-primary"/>
                         </form>
                     </div>

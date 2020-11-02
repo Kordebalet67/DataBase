@@ -1,25 +1,33 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Authorization</title>
+    <title>Авторизация</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
-<body>
+<body style="background-color: #232222">
 
 <div class="container">
     <div class="row">
         <div class="col-lg-4 col-lg-offset-4">
-            <h1 class="title">Authorization page</h1>
+            <h1 class="title">Страница авторизации</h1>
             <div>
-                <form action="" method="post">{% csrf_token %}
-                    {{ form.as_p }}
+                <form style="color: #06869a" action="" method="post">{% csrf_token %}
                     <div>
-                        <button type="submit" class="btn1 btn btn-primary">Log in</button>
+                        <label>Логин: </label>
+                        {{ form.login }}
+                    </div>
+                    <div>
+                        <label>Пароль: </label>
+                        {{ form.password }}
+                    </div>
+                    <div>
+                        <button type="submit" class="btn1 btn btn-primary">Войти</button>
                     </div>
                 </form>
             </div>

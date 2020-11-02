@@ -5,7 +5,7 @@ from Login import views
 
 urlpatterns = [
 
-    url(r'^main', views.mainpage, name='MainPage'),
+    url(r'^main', views.mainpage, name='Main Page'),
     url('^search/sname.html', views.name, name='Search by name'),
     url(r'^search/scourse.html', views.course, name='Search by course'),
     url(r'^insert/insert.html', views.insert, name='Insert'),
