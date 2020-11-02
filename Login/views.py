@@ -33,6 +33,14 @@ def base(request):
     return render(request, 'base.html', locals())
 
 
+def update(request):
+    return render(request, 'update/update.html', locals())
+
+
+def delete(request):
+    return render(request, 'delete/delete.html', locals())
+
+
 def course(request):
     form = CourseForm(request.POST or None)
     if request.method == "POST" and form.is_valid():

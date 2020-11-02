@@ -12,6 +12,8 @@ urlpatterns = [
     url(r'^base', views.base, name='Base'),
     url(r'^educ', views.insert_education, name='Education'),
     url(r'^search', views.search, name='Search'),
+    url(r'^upd', views.update, name='Update'),
+    url(r'^del', views.delete, name='Delete'),
     url(r'^', views.auth, name='authorization'),
 
 ]
