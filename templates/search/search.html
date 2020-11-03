@@ -1,21 +1,54 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>Searching</title>
+    <title>Поиск</title>
 {% endblock title %}
 
 {% block content %}
-    <h1 style="color: #06869a" >Searching information in database</h1>
+    <h1 style="color: #06869a">Поиск информации о студенте</h1>
     <div class="container">
-        <div class="col-lg-4 col-lg-offset-8">
+        <div class="col-lg-1 col-lg-offset-0">
             <div>
                 <form style="color: #06869a" action="" method="post">{% csrf_token %}
+                    <div class="grid-container-search">
+                        <div style="grid-area: column1">
+                            <form action="" method="post">{% csrf_token %}
+                                <div>
+                                    <label>Фамилия: </label>
+                                    {{ insert_form.surname }}
+                                </div>
+                                <div>
+                                    <label>Имя: </label>
+                                    {{ insert_form.name }}
+                                </div>
+                                <div>
+                                    <label>Отчество: </label>
+                                    {{ insert_form.middle_name }}
+                                </div>
 
-                    <div>
-                        <form action="" method="post">{% csrf_token %}
-
-                            <input type="submit" value="Confirm and add" class="btn1 btn btn-primary"/>
-                        </form>
+                                <input type="submit" value="Поиск" class="btn23 btn btn-primary"/>
+                            </form>
+                        </div>
+                        <div style="grid-area: column2">
+                            <div>
+                                <table class="result" >
+                                    <tr>
+                                        <th>Фамилия</th>
+                                        <th>Имя</th>
+                                        <th>Отчество</th>
+                                    </tr>
+                                    {% for x in results %}
+                                        <tr>
+                                            <td>{{ surname }}</td>
+                                            <td>{{ name }}</td>
+                                            <td>{{ middle_name }}</td>
+                                            <td>{{ chair }}</td>
+                                            <td>{{ work_position }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -69,8 +69,11 @@ def insert_education(request):
 
     mycoursor.execute("SELECT max(id) FROM npo.students")  # получение id слздаваемого студента
     id_stud = mycoursor.fetchone()
+    if id_stud[0] is None:
+        stud = 1
+    else:
+        stud = (id_stud[0]) + 1
 
-    stud = (id_stud[0]) + 1
     if request.method == "POST" and insert_form.is_valid() and education_form.is_valid():
         data = insert_form.cleaned_data  # принимаем значение с ёбанной заполняемой формы студентов
         data_ed = education_form.cleaned_data  # принимаем значение с ёбанной заполняемой формы учёбы
@@ -108,6 +111,34 @@ def insert_education(request):
 
 
 def search(request):
+    insert_form = Ext_Students_Form(request.POST or None)
+
+    if request.method == "POST":
+        surname = request.POST.get('surname')  # принимаем значение с ёбанной заполняемой формы
+        name = request.POST.get('name')
+        middle_name = request.POST.get('middle_name')
+
+        sql_search = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                     "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                     "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                     " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s " \
+                     "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
+                     "and students.academy_rank = academy_rank.id"
+        val_search = (surname, name, middle_name)
+
+        mycoursor.execute(sql_search, val_search)
+
+        results = mycoursor.fetchall()
+
+        for x in results:
+            print(x[1])
+            surname = x[0]
+            name = x[1]
+            middle_name = x[2]
+            chair = x[3]
+            work_position = x[4]
+
+        return render(request, 'search/search.html', locals())
     return render(request, 'search/search.html', locals())
 
 

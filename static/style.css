@@ -175,6 +175,15 @@
     height: 30px;
 }
 
+table.result, table.result td, table.result th, table.result tr{
+    margin-left: 50%;
+    width: 50%;
+    padding: 6px;
+    border: 2px #06869a;
+    align-content: center;
+    height: auto;
+}
+
 table.courseTable {
     align-content: center;
     width: 80%;
@@ -229,4 +238,12 @@ table.studentTable td, table.studentTable th {
     grid-template-areas: "column1 column2 column3";
     grid-template-rows: repeat(2, 200px);
     grid-template-columns: repeat(2, 500px);
+}
+
+.grid-container-search {
+    display: grid;
+
+    grid-template-areas: "column1 column2 ";
+    grid-template-rows: repeat(2, 200px);
+    grid-template-columns: 500px 800px;
 }
