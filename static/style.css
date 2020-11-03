@@ -47,12 +47,9 @@
 
 
 .btn1 {
-    display: inline;
-    position: relative;
-    top: 0px;
-    width: 265px;
-    left: 1px;
-    margin-top: 10px;
+    height: 190px;
+    width: 95%;
+
 }
 
 .btn3 {
@@ -81,30 +78,25 @@
 .btn6 {
     position: absolute;
     width: 140px;
-    top: 204px;
+    top: 500px;
 }
 
 .btn7 {
-    display: inline;
-    top: 194px;
-    position: absolute;
-    width: 140px;
-    left: 621px;
-    margin-top: 10px;
+    height: 190px;
+    width: 95%;
+    border-radius: 4px;
+    font-size: 40px;
 }
 
 .btn8 {
-    position: absolute;
-    left: 30px;
-    top: 50px;
+    height: 190px;
+    width: 95%;
 }
 
 .btn9 {
-    display: inline;
-    position: absolute;
-    top: 119px;
-    width: 150px;
-    left: 593px;
+    height: 190px;
+    width: 95%;
+
 }
 
 .btn10 {
@@ -116,8 +108,17 @@
     margin-top: 10px;
 }
 
-.btn {
-    padding: 10px 12px;
+.btn11 {
+    width: 248px;
+}
+
+.btn23 {
+    display: inline;
+    position: relative;
+    top: 10px;
+    width: 250px;
+    left: 1px;
+    margin-top: 10px;
 }
 
 .rowust {
@@ -213,3 +214,19 @@ table.studentTable td, table.studentTable th {
     padding: 5px;
 }
 
+.grid-container {
+    display: grid;
+
+    grid-template-areas: "button1 button2" "button3 button4";
+    grid-template-rows: repeat(2, 200px);
+    grid-template-columns: repeat(2, 500px);
+}
+
+
+.grid-container-insert {
+    display: grid;
+
+    grid-template-areas: "column1 column2 column3";
+    grid-template-rows: repeat(2, 200px);
+    grid-template-columns: repeat(2, 500px);
+}

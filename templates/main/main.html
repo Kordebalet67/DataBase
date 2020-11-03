@@ -1,28 +1,41 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>Главная страница</title>
+    <title>Main Page</title>
 {% endblock title %}
 
 {% block content %}
-    <form action="../educ">
-        <div>
-            <button type="submit" class="btn8 btn btn-primary">Добавить нового студента</button>
+    <div class="col-lg-8 col-lg-offset-3">
+
+        <div class="grid-container">
+            <form action="../educ">
+                <div style="grid-area:button1">
+                    <button type="submit" class="btn8 btn btn-primary" style="grid-area:button1; border-radius: 30px;
+font-size: 40px">Insert new item
+                    </button>
+                </div>
+            </form>
+            <form action="../search/search.html">
+                <div style="grid-area:button2">
+                    <button type="submit" class="btn9 btn btn-primary" style="grid-area:button2; border-radius: 30px;
+font-size: 40px">Search in database
+                    </button>
+                </div>
+            </form>
+            <form action="../search/search.html">
+                <div style="grid-area:button3">
+                    <button type="submit" class="btn7 btn btn-primary" style="grid-area:button3; border-radius: 30px;
+font-size: 40px">Update database
+                    </button>
+                </div>
+            </form>
+            <form action="../search/search.html">
+                <div style="grid-area:button4">
+                    <button type="submit" class="btn1 btn btn-primary" style="grid-area:button4; border-radius: 30px;
+font-size: 40px">Delete from database
+                    </button>
+                </div>
+            </form>
         </div>
-    </form>
-    <form action="../search">
-        <div>
-            <button type="submit" class="btn9 btn btn-primary">Найти</button>
-        </div>
-    </form>
-    <form action="../upd">
-        <div>
-            <button type="submit" class="btn7 btn btn-primary">Изменить информацию</button>
-        </div>
-    </form>
-    <form action="../del">
-        <div>
-            <button type="submit" class="btn1 btn btn-primary">Удалить студанта</button>
-        </div>
-    </form>
+    </div>
 {% endblock content %}
