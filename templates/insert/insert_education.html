@@ -6,92 +6,92 @@
 
 
 {% block content %}
-    <h1 style="color: #06869a">Добавление новой информации о человеке</h1>
+    <h1 style="color: #06869a;">Добавление новой информации о человеке</h1>
     <div class="container">
         <div class="col-lg-5 col-lg-offset-1">
             <div>
                 <form style="color: #06869a" action="" method="post">{% csrf_token %}
                     <div class="grid-container-insert">
-                        <div style="grid-area: column1">
+                        <div style="grid-area: column1; padding-right: 80px; padding-top: 30px">
 
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Фамилия: </label>
                                 {{ insert_form.surname }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Имя: </label>
                                 {{ insert_form.name }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Отчество: </label>
                                 {{ insert_form.middle_name }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Должность: </label>
                                 {{ insert_form.work_position }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Диплом: </label>
                                 {{ insert_form.diplom }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Год истечения контракта: </label>
                                 {{ insert_form.contract_expire }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Год окончания обучения: </label>
                                 {{ insert_form.education_year }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Уволен(да\нет): </label>
                                 {{ insert_form.fired }}
                             </div>
                         </div>
-                        <div style="grid-area: column2">
-                            <div>
+                        <div style="grid-area: column2; padding-left:80px;padding-top: 30px">
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Информация из университета: </label>
                                 {{ education_form.university_text }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Название курса: </label>
                                 {{ education_form.course_name }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Дата начала курса: </label>
                                 {{ education_form.course_start }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Дата окончания курса: </label>
                                 {{ education_form.course_end }}
                             </div>
-                            <div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Дополнительная информация: </label>
                                 {{ education_form.info }}
                             </div>
                         </div>
-                        <div style="grid-area: column3">
+                        <div style="grid-area: column3; padding-left:80px;padding-top: 30px">
                             <form action="" method="post">{% csrf_token %}
-                                <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>ВУЗ: </label>
                                     {{ university_form.university_name }}
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Кафедра: </label>
                                     {{ chair_form.chair_name }}
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Учёная степень: </label>
                                     {{ phd_form.phd_name }}
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Учёное звание: </label>
                                     {{ academy_rank_form.academy_rank_name }}
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Форма обучения: </label>
                                     {{ course_type_form.course_type_name }}
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Форма реализации: </label>
                                     {{ realisation_form_form.realization_form_name }}
                                 </div>
