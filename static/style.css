@@ -175,8 +175,8 @@
     height: 30px;
 }
 
-table.result, table.result td, table.result th, table.result tr{
-    margin-left: 50%;
+table.result, table.result td, table.result th, table.result tr {
+    margin-left: 0;
     width: 50%;
     padding: 6px;
     border: 2px #06869a;
@@ -184,44 +184,10 @@ table.result, table.result td, table.result th, table.result tr{
     height: auto;
 }
 
-table.courseTable {
-    align-content: center;
-    width: 80%;
-    border-collapse: collapse;
-    border-spacing: 0;
-    height: auto;
+table.result th {
+    font-size: 18px;
 }
 
-table.courseTable, table.courseTable td, table.courseTable th {
-    border: 1px solid #595959;
-}
-
-table.courseTable td, table.courseTable th {
-    padding: 3px;
-    width: 30px;
-    height: 35px;
-}
-
-
-table.studentTable {
-    padding: 10px;
-    align-content: center;
-    width: 80%;
-    border-collapse: collapse;
-    border-spacing: 10px;
-    height: auto;
-}
-
-table.studentTable, table.studentTable td, table.studentTable th {
-    border: 1px solid #595959;
-    padding: 1px;
-}
-
-table.studentTable td, table.studentTable th {
-    height: 35px;
-    width: 150px;
-    padding: 5px;
-}
 
 .grid-container {
     display: grid;
@@ -245,5 +211,5 @@ table.studentTable td, table.studentTable th {
 
     grid-template-areas: "column1 column2 ";
     grid-template-rows: repeat(2, 200px);
-    grid-template-columns: 500px 800px;
+    grid-template-columns: 400px 900px;
 }

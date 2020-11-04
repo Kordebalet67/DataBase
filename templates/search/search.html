@@ -31,21 +31,29 @@
                         </div>
                         <div style="grid-area: column2">
                             <div>
-                                <table class="result" >
+                                <table class="result">
                                     <tr>
                                         <th>Фамилия</th>
                                         <th>Имя</th>
                                         <th>Отчество</th>
+                                        <th>Кафедра</th>
+                                        <th>Должность</th>
+                                        <th>Учёная степень</th>
+                                        <th>Учёное звание</th>
+                                        <th>Диплом</th>
+                                        <th>Окончание контракта</th>
+                                        <th>Год выпуска</th>
+                                        <th>Статус</th>
                                     </tr>
+
                                     {% for x in results %}
                                         <tr>
-                                            <td>{{ surname }}</td>
-                                            <td>{{ name }}</td>
-                                            <td>{{ middle_name }}</td>
-                                            <td>{{ chair }}</td>
-                                            <td>{{ work_position }}</td>
+                                            {% for y in x %}
+                                            <td> {{ y }}</td>
+                                        {% endfor %}
                                         </tr>
                                     {% endfor %}
+
                                 </table>
                             </div>
                         </div>

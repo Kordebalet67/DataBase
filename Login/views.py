@@ -131,13 +131,13 @@ def search(request):
         results = mycoursor.fetchall()
 
         for x in results:
-            print(x[1])
-            surname = x[0]
-            name = x[1]
-            middle_name = x[2]
-            chair = x[3]
-            work_position = x[4]
 
+            if x[10] == 0:
+                fired = 'уволен'
+            else:
+                fired = 'не уволен'
+
+        print(results)
         return render(request, 'search/search.html', locals())
     return render(request, 'search/search.html', locals())
 
