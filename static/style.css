@@ -116,7 +116,7 @@
     display: inline;
     position: relative;
     top: 10px;
-    width: 250px;
+    width: 200px;
     left: 1px;
     margin-top: 10px;
 }
@@ -157,8 +157,8 @@
 }
 
 #id_course_name {
-    width: 300px;
-    height: 30px;
+    width: 269px;
+    height: 60px;
 }
 
 #id_login {
@@ -175,11 +175,14 @@
     height: 30px;
 }
 
+#id_info{
+    height: 142px;
+}
 table.result, table.result td, table.result th, table.result tr {
-    margin-left: 0;
+    margin-left: 5%;
     width: 50%;
     padding: 6px;
-    border: 2px #06869a;
+    border: 2px solid #06869a;
     align-content: center;
     height: auto;
 }

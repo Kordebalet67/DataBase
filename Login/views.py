@@ -4,6 +4,9 @@ from django import http
 from .forms import *
 import mysql.connector
 
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+#  обращение к базе mysql
 data_base = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -14,6 +17,9 @@ data_base = mysql.connector.connect(
 mycoursor = data_base.cursor()
 
 
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод страницы авторизации
 def auth(request):
     form = UserForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
@@ -25,36 +31,23 @@ def auth(request):
     return render(request, 'auth/auth.html', locals())
 
 
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод главной страницы
 def mainpage(request):
     return render(request, 'main/main.html', locals())
 
 
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод базовой страницы
 def base(request):
     return render(request, 'base.html', locals())
 
 
-def course(request):
-    form = CourseForm(request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        data = form.cleaned_data
-        courses = Courses.objects.filter(course=data["course"])
-
-        return render(request, 'results/rescourse.html', locals())
-
-    return render(request, 'search/scourse.html', locals())
-
-
-def name(request):
-    form = StudentForm(request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        data = form.cleaned_data
-        students = Students.objects.filter(surname=data["surname"])
-
-        return render(request, 'results/resname.html', locals())
-
-    return render(request, 'search/sname.html', locals())
-
-
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод страницы ввода новой информации
 def insert_education(request):
     # перечисляем ёбанные формы для заполнения. 2 формы - с обычными текстовыми полями
     insert_form = Ext_Students_Form(request.POST or None)
@@ -110,6 +103,9 @@ def insert_education(request):
     return render(request, 'insert/insert_education.html', locals())
 
 
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод страницы поиска по ФИО
 def search(request):
     insert_form = Ext_Students_Form(request.POST or None)
 
@@ -118,39 +114,175 @@ def search(request):
         name = request.POST.get('name')
         middle_name = request.POST.get('middle_name')
 
-        sql_search = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
-                     "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
-                     "students.diplom, students.contract_expire, students.education_year, students.fired" \
-                     " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s " \
-                     "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
-                     "and students.academy_rank = academy_rank.id"
-        val_search = (surname, name, middle_name)
+        if middle_name == '' and name == '':
 
-        mycoursor.execute(sql_search, val_search)
+            sql_search = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                         "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                         "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                         " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s" \
+                         " and students.chair = chair.id and students.phd = phd.id " \
+                         "and students.academy_rank = academy_rank.id"
+            val_search = (surname,)
+            mycoursor.execute(sql_search, val_search)
+
+        else:
+            if middle_name == "":
+
+                sql_search = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                             "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                             "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                             " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s " \
+                             "and name = %s and students.chair = chair.id and students.phd = phd.id " \
+                             "and students.academy_rank = academy_rank.id"
+                val_search = (surname, name)
+                mycoursor.execute(sql_search, val_search)
+
+            else:
+
+                sql_search = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                             "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                             "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                             " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s" \
+                             "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
+                             "and students.academy_rank = academy_rank.id"
+                val_search = (surname, name, middle_name)
+                mycoursor.execute(sql_search, val_search)
 
         results = mycoursor.fetchall()
 
-        for x in results:
-
-            if x[10] == 0:
-                fired = 'уволен'
-            else:
-                fired = 'не уволен'
-
-        print(results)
         return render(request, 'search/search.html', locals())
     return render(request, 'search/search.html', locals())
 
 
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод страницы обновления информации по ИД
 def update(request):
+    insert_form = Ext_Students_Form(request.POST or None)
+    id_stud = int
+
+    if request.method == "POST":
+        surname = request.POST.get('surname')  # принимаем значение с ёбанной заполняемой формы
+        name = request.POST.get('name')
+        middle_name = request.POST.get('middle_name')
+
+        if middle_name == '' and name == '':
+
+            sql_update = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                         "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                         "students.diplom, students.contract_expire, students.education_year, students.fired," \
+                         " students.id from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s" \
+                         " and students.chair = chair.id and students.phd = phd.id " \
+                         "and students.academy_rank = academy_rank.id"
+            val_update = (surname,)
+            mycoursor.execute(sql_update, val_update)
+
+        else:
+            if middle_name == "":
+
+                sql_update = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                             "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                             "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                             " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s " \
+                             "and name = %s and students.chair = chair.id and students.phd = phd.id " \
+                             "and students.academy_rank = academy_rank.id"
+                val_update = (surname, name)
+                mycoursor.execute(sql_update, val_update)
+
+            else:
+
+                sql_update = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                             "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                             "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                             " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s" \
+                             "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
+                             "and students.academy_rank = academy_rank.id"
+                val_update = (surname, name, middle_name)
+                mycoursor.execute(sql_update, val_update)
+
+        results = mycoursor.fetchall()
+
+        return render(request, 'update/update.html', locals())
     return render(request, 'update/update.html', locals())
 
 
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод страницы удаления студента
 def delete(request):
+    insert_form = Ext_Students_Form(request.POST or None)
+    id_form = ID_choose_form(request.POST or None)
+
+    if request.method == "POST":
+        surname = request.POST.get('surname')  # принимаем значение с ёбанной заполняемой формы
+        name = request.POST.get('name')
+        middle_name = request.POST.get('middle_name')
+        chosen_id = request.POST.get('id')
+
+        if chosen_id is not None:
+            print(chosen_id)
+
+            val_delete = (chosen_id,)
+
+            sql_delete = "delete from education where education.student = %s"
+            mycoursor.execute(sql_delete, val_delete)
+
+            sql_delete = "delete from students where students.id = %s"
+            mycoursor.execute(sql_delete, val_delete)
+
+            data_base.commit()
+
+        else:
+
+            if middle_name == '' and name == '':
+
+                sql_search_delete = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                             "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                             "students.diplom, students.contract_expire, students.education_year, students.fired," \
+                             " students.id from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s" \
+                             " and students.chair = chair.id and students.phd = phd.id " \
+                             "and students.academy_rank = academy_rank.id"
+                val_search_delete = (surname,)
+                mycoursor.execute(sql_search_delete, val_search_delete)
+
+            else:
+                if middle_name == "":
+
+                    sql_search_delete = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                                 "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                                 "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                                 " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s " \
+                                 "and name = %s and students.chair = chair.id and students.phd = phd.id " \
+                                 "and students.academy_rank = academy_rank.id"
+                    val_search_delete = (surname, name)
+                    mycoursor.execute(sql_search_delete, val_search_delete)
+
+                else:
+
+                    sql_search_delete = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                                 "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                                 "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                                 " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s" \
+                                 "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
+                                 "and students.academy_rank = academy_rank.id"
+                    val_search_delete = (surname, name, middle_name)
+                    mycoursor.execute(sql_search_delete, val_search_delete)
+
+            results = mycoursor.fetchall()
+
+        return render(request, 'delete/delete.html', locals())
     return render(request, 'delete/delete.html', locals())
 
 
+#
+#
+#
+#
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
 # этот фрагмент отжил своё. но как работающий образец должен остаться
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
 def insert(request):
     insert_form = Ext_Students_Form(request.POST or None)
     chair_form = Chair_form
@@ -175,3 +307,25 @@ def insert(request):
         print(mycoursor.rowcount, "record inserted")
         return http.HttpResponseRedirect('')
     return render(request, 'insert/insert.html', locals())
+
+
+def course(request):
+    form = CourseForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        data = form.cleaned_data
+        courses = Courses.objects.filter(course=data["course"])
+
+        return render(request, 'results/rescourse.html', locals())
+
+    return render(request, 'search/scourse.html', locals())
+
+
+def name(request):
+    form = StudentForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        data = form.cleaned_data
+        students = Students.objects.filter(surname=data["surname"])
+
+        return render(request, 'results/resname.html', locals())
+
+    return render(request, 'search/sname.html', locals())

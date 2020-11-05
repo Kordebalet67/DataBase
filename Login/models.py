@@ -143,15 +143,20 @@ class University(models.Model):
         return self.university_name
 
 
+#  моделей для выбора пользователя
+class ID(models.Model):
+    id = models.IntegerField(primary_key=True)
+
+
 # описание главных моделей
 
 class Ext_Students(models.Model):
     id = models.IntegerField(primary_key=True)
-    name = models.TextField(max_length=45)
-    surname = models.TextField(max_length=45)
-    middle_name = models.TextField(max_length=45)
-    work_position = models.TextField(max_length=255)
-    diplom = models.TextField(max_length=511)
+    name = models.TextField(max_length=45, blank=True, null=True)
+    surname = models.TextField(max_length=45, blank=True, null=True)
+    middle_name = models.TextField(max_length=45, blank=True, null=True)
+    work_position = models.TextField(max_length=255, blank=True, null=True)
+    diplom = models.TextField(max_length=511, blank=True, null=True)
     contract_expire = models.IntegerField()
     education_year = models.IntegerField()
     fired = models.BooleanField()
@@ -165,11 +170,11 @@ class Ext_Students(models.Model):
 
 class Education(models.Model):
     id = models.IntegerField(primary_key=True)
-    university_text = models.TextField(max_length=511)
-    course_name = models.TextField(max_length=511)
-    course_start = models.DateField()
-    course_end = models.DateField()
-    info = models.TextField(max_length=1023)
+    university_text = models.TextField(max_length=511, blank=True, null=True)
+    course_name = models.TextField(max_length=511, blank=True, null=True)
+    course_start = models.DateField(blank=True, null=True)
+    course_end = models.DateField(blank=True, null=True)
+    info = models.TextField(max_length=1023, blank=True, null=True)
     realisation_form = Realization_form
     chair = Chair
     student = Ext_Students

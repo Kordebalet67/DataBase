@@ -3,3 +3,83 @@
 {% block title %}
     <title>Удаление студента</title>
 {% endblock title %}
+
+
+{% block content %}
+    <h1 style="color: #06869a">Удаление информации о студенте</h1>
+    <div class="container">
+        <div class="col-lg-1 col-lg-offset-0" style="padding-top: 5%">
+            <div>
+                <form style="color: #06869a" action="" method="post">{% csrf_token %}
+                    <div class="grid-container-search">
+                        <div style="grid-area: column1">
+                            <form action="" method="post">{% csrf_token %}
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                    <label>Фамилия: </label>
+                                    {{ insert_form.surname }}
+                                </div>
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                    <label>Имя: </label>
+                                    {{ insert_form.name }}
+                                </div>
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                    <label>Отчество: </label>
+                                    {{ insert_form.middle_name }}
+                                </div>
+
+
+                                <input type="submit" value="Поиск" class="btn23 btn btn-primary"/>
+                            </form>
+                        </div>
+                        <div style="grid-area: column2">
+                            <div>
+                                <table class="result">
+                                    <tr>
+                                        <th>Фамилия</th>
+                                        <th>Имя</th>
+                                        <th>Отчество</th>
+                                        <th>Кафедра</th>
+                                        <th>Должность</th>
+                                        <th>Учёная степень</th>
+                                        <th>Учёное звание</th>
+                                        <th>Диплом</th>
+                                        <th>Окончание контракта</th>
+                                        <th>Год выпуска</th>
+                                        <th>Статус</th>
+                                        <th>ID</th>
+                                    </tr>
+
+                                    {% for x in results %}
+                                        <tr>
+                                            {% for y in x %}
+                                                <td>
+                                                    {% if y == 0 %}
+                                                        уволен
+                                                    {% elif y == 1 %}
+                                                        не уволен
+                                                    {% else %}
+                                                        {{ y }}
+                                                    {% endif %}
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form style="color: #06869a" action="" method="post">{% csrf_token %}
+                    <div>
+                        <div>
+                            <label>ID удаляемого студента: </label>
+                            {{ id_form.id }}
+                        </div>
+                        <input type="submit" value="Подтвердить" class="btn23 btn btn-primary"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
