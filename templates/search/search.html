@@ -11,17 +11,17 @@
             <div>
                 <form style="color: #06869a" action="" method="post">{% csrf_token %}
                     <div class="grid-container-search">
-                        <div style="grid-area: column1">
+                        <div style="grid-area: column1; padding-top: 30px">
                             <form action="" method="post">{% csrf_token %}
-                                <div>
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Фамилия: </label>
                                     {{ insert_form.surname }}
                                 </div>
-                                <div>
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Имя: </label>
                                     {{ insert_form.name }}
                                 </div>
-                                <div>
+                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Отчество: </label>
                                     {{ insert_form.middle_name }}
                                 </div>
@@ -30,9 +30,10 @@
                             </form>
                         </div>
                         <div style="grid-area: column2">
-                            <div>
+                            <div style="padding: 30px">
                                 <table class="result">
                                     <tr>
+                                        <td>
                                         <th>Фамилия</th>
                                         <th>Имя</th>
                                         <th>Отчество</th>
