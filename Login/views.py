@@ -157,50 +157,67 @@ def search(request):
 #  -------------------------------------------------------------------------------------------------
 #  -------------------------------------------------------------------------------------------------
 # метод страницы обновления информации по ИД
-def update(request):
+#  -------------------------------------------------------------------------------------------------
+# самая ёбань. совмещено сразу три формы
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+def update1(request):
     insert_form = Ext_Students_Form(request.POST or None)
-    id_stud = int
+    id_form = ID_choose_form(request.POST or None)
+    education_form = Education_Form((request.POST or None))
+    # перечисляем ёбанные формы для заполнения. ещё 6  - с ёбанными выпадающими списками
+    university_form = University_form
+    course_type_form = Course_type_form
+    realisation_form_form = Realisation_form_form  # гореть мне в аду за такие названия
+    chair_form = Chair_form
+    phd_form = PHD_form
+    academy_rank_form = Academy_rank_form
 
     if request.method == "POST":
         surname = request.POST.get('surname')  # принимаем значение с ёбанной заполняемой формы
         name = request.POST.get('name')
         middle_name = request.POST.get('middle_name')
+        chosen_id = request.POST.get('id')
 
-        if middle_name == '' and name == '':
-
-            sql_update = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
-                         "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
-                         "students.diplom, students.contract_expire, students.education_year, students.fired," \
-                         " students.id from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s" \
-                         " and students.chair = chair.id and students.phd = phd.id " \
-                         "and students.academy_rank = academy_rank.id"
-            val_update = (surname,)
-            mycoursor.execute(sql_update, val_update)
+        if chosen_id is not None:
+            print(chosen_id)
 
         else:
-            if middle_name == "":
+            if middle_name == '' and name == '':
 
                 sql_update = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
                              "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
-                             "students.diplom, students.contract_expire, students.education_year, students.fired" \
-                             " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s " \
-                             "and name = %s and students.chair = chair.id and students.phd = phd.id " \
+                             "students.diplom, students.contract_expire, students.education_year, students.fired," \
+                             " students.id from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s" \
+                             " and students.chair = chair.id and students.phd = phd.id " \
                              "and students.academy_rank = academy_rank.id"
-                val_update = (surname, name)
+                val_update = (surname,)
                 mycoursor.execute(sql_update, val_update)
 
             else:
+                if middle_name == "":
 
-                sql_update = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
-                             "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
-                             "students.diplom, students.contract_expire, students.education_year, students.fired" \
-                             " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s" \
-                             "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
-                             "and students.academy_rank = academy_rank.id"
-                val_update = (surname, name, middle_name)
-                mycoursor.execute(sql_update, val_update)
+                    sql_update = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                                 "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                                 "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                                 " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s " \
+                                 "and name = %s and students.chair = chair.id and students.phd = phd.id " \
+                                 "and students.academy_rank = academy_rank.id"
+                    val_update = (surname, name)
+                    mycoursor.execute(sql_update, val_update)
 
-        results = mycoursor.fetchall()
+                else:
+
+                    sql_update = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                                 "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                                 "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                                 " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s" \
+                                 "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
+                                 "and students.academy_rank = academy_rank.id"
+                    val_update = (surname, name, middle_name)
+                    mycoursor.execute(sql_update, val_update)
+
+            results = mycoursor.fetchall()
 
         return render(request, 'update/update.html', locals())
     return render(request, 'update/update.html', locals())
@@ -209,7 +226,7 @@ def update(request):
 #  -------------------------------------------------------------------------------------------------
 #  -------------------------------------------------------------------------------------------------
 # метод страницы удаления студента
-def delete(request):
+def delete1(request):
     insert_form = Ext_Students_Form(request.POST or None)
     id_form = ID_choose_form(request.POST or None)
 
@@ -237,11 +254,11 @@ def delete(request):
             if middle_name == '' and name == '':
 
                 sql_search_delete = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
-                             "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
-                             "students.diplom, students.contract_expire, students.education_year, students.fired," \
-                             " students.id from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s" \
-                             " and students.chair = chair.id and students.phd = phd.id " \
-                             "and students.academy_rank = academy_rank.id"
+                                    "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                                    "students.diplom, students.contract_expire, students.education_year, students.fired," \
+                                    " students.id from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s" \
+                                    " and students.chair = chair.id and students.phd = phd.id " \
+                                    "and students.academy_rank = academy_rank.id"
                 val_search_delete = (surname,)
                 mycoursor.execute(sql_search_delete, val_search_delete)
 
@@ -249,22 +266,22 @@ def delete(request):
                 if middle_name == "":
 
                     sql_search_delete = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
-                                 "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
-                                 "students.diplom, students.contract_expire, students.education_year, students.fired" \
-                                 " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s " \
-                                 "and name = %s and students.chair = chair.id and students.phd = phd.id " \
-                                 "and students.academy_rank = academy_rank.id"
+                                        "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                                        "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                                        " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s " \
+                                        "and name = %s and students.chair = chair.id and students.phd = phd.id " \
+                                        "and students.academy_rank = academy_rank.id"
                     val_search_delete = (surname, name)
                     mycoursor.execute(sql_search_delete, val_search_delete)
 
                 else:
 
                     sql_search_delete = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
-                                 "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
-                                 "students.diplom, students.contract_expire, students.education_year, students.fired" \
-                                 " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s" \
-                                 "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
-                                 "and students.academy_rank = academy_rank.id"
+                                        "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                                        "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                                        " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s" \
+                                        "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
+                                        "and students.academy_rank = academy_rank.id"
                     val_search_delete = (surname, name, middle_name)
                     mycoursor.execute(sql_search_delete, val_search_delete)
 
@@ -329,3 +346,11 @@ def name(request):
         return render(request, 'results/resname.html', locals())
 
     return render(request, 'search/sname.html', locals())
+
+
+def update(request):
+    return render(request, 'update/update.html', locals())
+
+
+def delete(request):
+    return render(request, 'delete/delete.html', locals())

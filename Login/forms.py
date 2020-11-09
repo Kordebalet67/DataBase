@@ -72,3 +72,9 @@ class Course_type_form(forms.ModelForm):
     class Meta:
         model = Course_type
         fields = ['course_type_name']
+
+
+class ID_choose_form(forms.ModelForm):
+    class Meta:
+        model = ID
+        exclude = [""]

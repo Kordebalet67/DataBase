@@ -175,9 +175,10 @@
     height: 30px;
 }
 
-#id_info{
+#id_info {
     height: 142px;
 }
+
 table.result, table.result td, table.result th, table.result tr {
     margin-left: 5%;
     width: 50%;
@@ -211,8 +212,27 @@ table.result th {
 
 .grid-container-search {
     display: grid;
+    padding-top: 60%;
 
     grid-template-areas: "column1 column2 ";
     grid-template-rows: repeat(2, 200px);
     grid-template-columns: 400px 900px;
+}
+
+.grid-container-update {
+    display: grid;
+
+    grid-template-areas: "column1 column2"
+                        "column3 column4";
+    grid-template-rows: repeat(2, 160px);
+    grid-template-columns: 350px 800px;
+}
+
+
+.grid-container-insert_update {
+    display: grid;
+
+    grid-template-areas: "column1 column2 column3";
+    grid-template-rows: repeat(2, 200px);
+    grid-template-columns: repeat(2, 380px);
 }
