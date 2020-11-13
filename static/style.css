@@ -196,7 +196,7 @@ table.result th {
 .grid-container {
     display: grid;
 
-    grid-template-areas: "button1 button2" "button3 button4";
+    grid-template-areas: "button1 button2" "button3 button4" "button5 button6";
     grid-template-rows: repeat(2, 200px);
     grid-template-columns: repeat(2, 500px);
 }
