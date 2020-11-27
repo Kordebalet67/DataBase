@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import http
 from django import http
 from .forms import *
 import mysql.connector
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import Group, Permission, User
+from django.shortcuts import get_object_or_404
 
 #  -------------------------------------------------------------------------------------------------
 #  -------------------------------------------------------------------------------------------------
@@ -25,17 +28,36 @@ def auth(request):
     if request.method == "POST" and form.is_valid():
 
         data = form.cleaned_data
-        if data["login"] == "user" and data["password"] == "Qwerty":
-            return render(request, 'main/main.html', locals())
+        user = authenticate(username=data["login"], password=data["password"])
+        if user is not None:
+            login(request, user)
+            if data["login"] == "user1":
+                return mainpage_user(request)
+            elif data["login"] == "Admin":
+                return mainpage(request)
 
-    return render(request, 'auth/auth.html', locals())
+    return render(request, 'auth/logged_in.html', locals())
 
 
 #  -------------------------------------------------------------------------------------------------
 #  -------------------------------------------------------------------------------------------------
-# метод главной страницы
+# метод главной страницы с правами администратора
 def mainpage(request):
-    return render(request, 'main/main.html', locals())
+    if not request.user.is_authenticated:
+        return auth(request)
+    if not request.user.username == "Admin":
+        return auth(request)
+    print(request.user.username)
+    return render(request, 'main/main_admin.html', locals())
+
+
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод главной страницы с правами пользователя
+def mainpage_user(request):
+    if not request.user.is_authenticated:
+        return auth(request)
+    return render(request, 'main/main_user.html', locals())
 
 
 #  -------------------------------------------------------------------------------------------------
@@ -161,7 +183,7 @@ def search(request):
 # самая ёбань. совмещено сразу три формы
 #  -------------------------------------------------------------------------------------------------
 #  -------------------------------------------------------------------------------------------------
-def update1(request):
+def update(request):
     insert_form = Ext_Students_Form(request.POST or None)
     id_form = ID_choose_form(request.POST or None)
     education_form = Education_Form((request.POST or None))
@@ -226,7 +248,10 @@ def update1(request):
 #  -------------------------------------------------------------------------------------------------
 #  -------------------------------------------------------------------------------------------------
 # метод страницы удаления студента
-def delete1(request):
+#  -------------------------------------------------------------------------------------------------
+#  ТОЛЬКО ДЛЯ АДМИНА
+#  -------------------------------------------------------------------------------------------------
+def delete(request):
     insert_form = Ext_Students_Form(request.POST or None)
     id_form = ID_choose_form(request.POST or None)
 
@@ -291,6 +316,30 @@ def delete1(request):
     return render(request, 'delete/delete.html', locals())
 
 
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод страницы обновления содержимого в словарях(выпадающих списках)
+#  -------------------------------------------------------------------------------------------------
+#  ТОЛЬКО ДЛЯ АДМИНА
+#  -------------------------------------------------------------------------------------------------
+def update_dicts(request):
+    if not request.user.is_authenticated:
+        return auth(request)
+    if not request.user.username == "Admin":
+        return auth(request)
+    return render(request, '', locals())
+
+
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод страницы обновления содержимого в словарях(выпадающих списках)
+#  -------------------------------------------------------------------------------------------------
+def add_educ(request):
+    if not request.user.is_authenticated:
+        return auth(request)
+    return render(request, '', locals())
+
+
 #
 #
 #
@@ -348,9 +397,9 @@ def name(request):
     return render(request, 'search/sname.html', locals())
 
 
-def update(request):
+def update1(request):
     return render(request, 'update/update.html', locals())
 
 
-def delete(request):
+def delete1(request):
     return render(request, 'delete/delete.html', locals())

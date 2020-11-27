@@ -5,10 +5,8 @@ from Login import views
 
 urlpatterns = [
 
+    url(r'^main_user', views.mainpage_user, name='Main Page'),
     url(r'^main', views.mainpage, name='Main Page'),
-    url('^search/sname.html', views.name, name='Search by name'),
-    url(r'^search/scourse.html', views.course, name='Search by course'),
-    url(r'^insert/insert.html', views.insert, name='Insert'),
     url(r'^base', views.base, name='Base'),
     url(r'^educ', views.insert_education, name='Education'),
     url(r'^search', views.search, name='Search'),
@@ -16,4 +14,8 @@ urlpatterns = [
     url(r'^del', views.delete, name='Delete'),
     url(r'^', views.auth, name='authorization'),
 
+]
+
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
