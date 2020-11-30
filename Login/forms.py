@@ -78,3 +78,15 @@ class ID_choose_form(forms.ModelForm):
     class Meta:
         model = ID
         exclude = [""]
+
+
+class Inout_form(forms.ModelForm):
+    class Meta:
+        model = Input
+        exclude = [""]
+
+
+class Dicts_form(forms.ModelForm):
+    class Meta:
+        model = Dicts
+        fields = ['dicts_name']

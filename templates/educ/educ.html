@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>Поиск</title>
+    <title>Обучение</title>
 {% endblock title %}
 
 {% block content %}
-    <h1 style="color: #06869a">Поиск информации о студенте</h1>
-    <h2 style="color: #06869a; font-size: 16px">Для корректного поиска введите минимум первые 3 буквы фамилии либо имени или отчества</h2>
-    <div class="container" style="top: 100px;">
+    <h1 style="color: #06869a">Добавление обучения существующему человеку</h1>
+    <div class="container">
         <div class="col-lg-1 col-lg-offset-0">
             <div>
                 <form style="color: #06869a" action="" method="post">{% csrf_token %}

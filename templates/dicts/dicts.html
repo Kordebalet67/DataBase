@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Изменение словарей</title>
+{% endblock title %}
+
+
+{% block content %}
+    <h1 style="color: #06869a;">Изменение пунктов выпадающих списков</h1>
+    <div class="container">
+        <div class="col-lg-5 col-lg-offset-1">
+            <div>
+                <form style="color: #06869a" action="" method="post">{% csrf_token %}
+                    <div class="grid-container-insert">
+                        <div style="grid-area: column1; padding-right: 80px; padding-top: 30px">
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                <label>Изменяемый список: </label>
+                                {{ dicts_form.dicts_name }}
+                            </div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                <label>Обновлённое значение: </label>
+                                {{ input_form.input }}
+                            </div>
+                            <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                <label>Добавить значение?: </label>
+                                {{ input_form.add }}
+                            </div>
+                            <div style="grid-area: column2; padding-left:80px;padding-top: 30px">
+                                <form action="" method="post">{% csrf_token %}
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>ВУЗ: </label>
+                                        {{ university_form.university_name }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Кафедра: </label>
+                                        {{ chair_form.chair_name }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Учёная степень: </label>
+                                        {{ phd_form.phd_name }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Учёное звание: </label>
+                                        {{ academy_rank_form.academy_rank_name }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Форма обучения: </label>
+                                        {{ course_type_form.course_type_name }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Форма реализации: </label>
+                                        {{ realisation_form_form.realization_form_name }}
+                                    </div>
+                                    <input type="submit" value="Подтвердить и изменить" class="btn23 btn btn-primary"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

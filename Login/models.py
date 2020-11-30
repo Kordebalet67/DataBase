@@ -148,6 +148,12 @@ class ID(models.Model):
     id = models.IntegerField(primary_key=True)
 
 
+#  модель для заполнения одного поля
+class Input(models.Model):
+    input = models.CharField(primary_key=True, max_length=256)
+    add = models.BooleanField(default=False)
+
+
 # описание главных моделей
 
 class Ext_Students(models.Model):
@@ -183,3 +189,17 @@ class Education(models.Model):
 
     def __str__(self):
         return "%s %s %s" % (self.course_name, self.course_start, self.course_end)
+
+
+#  -----------------------------------------------------------------------------------------------------
+#  Выпадающий список, состоящий из перечня всех выпадающих списков
+#  -----------------------------------------------------------------------------------------------------
+#  Сделан для изменения всех остальных выпадающих списков
+#  -----------------------------------------------------------------------------------------------------
+list_dicts = [(1, 'ВУЗ'), (2, 'Кафедра'), (3, 'Учёная степень'), (4, 'Учёное звание'), (5, 'Форма обучения'),
+              (6, 'Форма реализации')]
+
+
+class Dicts(models.Model):
+    id = models.IntegerField(primary_key=True)
+    dicts_name = models.CharField(max_length=100, choices=list_dicts, default=None)
