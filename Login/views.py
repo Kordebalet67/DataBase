@@ -24,6 +24,11 @@ mycoursor = data_base.cursor()
 #  -------------------------------------------------------------------------------------------------
 # метод страницы авторизации
 def auth(request):
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь авторизован - его автоматически
+    #  разлогинивает -- ЕСТЬ ПРОБЛЕМА. ПОЧЕМУ-ТО РАЗЛОГИНИВАЕТ ПРИ ЛЮБОМ ПЕРЕХОДЕ НА ЛЮБУЮ СТРАНИЦУ
+
+    #  ---------------------------------------------------------------------------------------------
     form = UserForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
 
@@ -43,11 +48,14 @@ def auth(request):
 #  -------------------------------------------------------------------------------------------------
 # метод главной страницы с правами администратора
 def mainpage(request):
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь не авторизован - его автоматически
+    #  направляет на страницу авторизации
     if not request.user.is_authenticated:
         return auth(request)
+    #  ---------------------------------------------------------------------------------------------
     if not request.user.username == "Admin":
         return auth(request)
-    print(request.user.username)
     return render(request, 'main/main_admin.html', locals())
 
 
@@ -55,8 +63,12 @@ def mainpage(request):
 #  -------------------------------------------------------------------------------------------------
 # метод главной страницы с правами пользователя
 def mainpage_user(request):
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь не авторизован - его автоматически
+    #  направляет на страницу авторизации
     if not request.user.is_authenticated:
         return auth(request)
+    #  ---------------------------------------------------------------------------------------------
     return render(request, 'main/main_user.html', locals())
 
 
@@ -71,6 +83,13 @@ def base(request):
 #  -------------------------------------------------------------------------------------------------
 # метод страницы ввода новой информации
 def insert_education(request):
+    print(request.user.username)
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь не авторизован - его автоматически
+    #  направляет на страницу авторизации
+    if not request.user.is_authenticated:
+        return auth(request)
+    #  ---------------------------------------------------------------------------------------------
     # перечисляем ёбанные формы для заполнения. 2 формы - с обычными текстовыми полями
     insert_form = Ext_Students_Form(request.POST or None)
     education_form = Education_Form((request.POST or None))
@@ -99,7 +118,7 @@ def insert_education(request):
         chosen_university = request.POST.get('university_name')  # значение с ёбанного выпадающего списка №4
         chosen_course_type = request.POST.get('course_type_name')  # значение с ёбанного выпадающего списка №5
         chosen_realisation_form = request.POST.get('realisation_form_name')  # значение с ёбанного выпадающего списка №6
-        print(stud)
+
         # запихиваем все полученные значения из форм по таблицам и словарям
         sql_stud = "insert into npo.students (surname, name, middle_name, work_position, diplom, contract_expire, " \
                    "education_year, chair, phd, academy_rank) " \
@@ -129,6 +148,12 @@ def insert_education(request):
 #  -------------------------------------------------------------------------------------------------
 # метод страницы поиска по ФИО
 def search(request):
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь не авторизован - его автоматически
+    #  направляет на страницу авторизации
+    if not request.user.is_authenticated:
+        return auth(request)
+    #  ---------------------------------------------------------------------------------------------
     insert_form = Ext_Students_Form(request.POST or None)
 
     if request.method == "POST":
@@ -184,6 +209,12 @@ def search(request):
 #  -------------------------------------------------------------------------------------------------
 #  -------------------------------------------------------------------------------------------------
 def update(request):
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь не авторизован - его автоматически
+    #  направляет на страницу авторизации
+    if not request.user.is_authenticated:
+        return auth(request)
+    #  ---------------------------------------------------------------------------------------------
     insert_form = Ext_Students_Form(request.POST or None)
     id_form = ID_choose_form(request.POST or None)
     education_form = Education_Form((request.POST or None))
@@ -252,6 +283,12 @@ def update(request):
 #  ТОЛЬКО ДЛЯ АДМИНА
 #  -------------------------------------------------------------------------------------------------
 def delete(request):
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь не авторизован - его автоматически
+    #  направляет на страницу авторизации
+    if not request.user.is_authenticated:
+        return auth(request)
+    #  ---------------------------------------------------------------------------------------------
     insert_form = Ext_Students_Form(request.POST or None)
     id_form = ID_choose_form(request.POST or None)
 
@@ -323,11 +360,126 @@ def delete(request):
 #  ТОЛЬКО ДЛЯ АДМИНА
 #  -------------------------------------------------------------------------------------------------
 def update_dicts(request):
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь не авторизован - его автоматически
+    #  направляет на страницу авторизации
     if not request.user.is_authenticated:
         return auth(request)
+    #  ---------------------------------------------------------------------------------------------
     if not request.user.username == "Admin":
         return auth(request)
-    return render(request, '', locals())
+
+    input_form = Inout_form(request.POST or None)
+    dicts_form = Dicts_form
+    university_form = University_form
+    course_type_form = Course_type_form
+    realisation_form_form = Realisation_form_form  # гореть мне в аду за такие названия
+    chair_form = Chair_form
+    phd_form = PHD_form
+    academy_rank_form = Academy_rank_form
+
+    if request.method == "POST" and input_form.is_valid():
+        input_value = input_form.cleaned_data
+        input_value_upd = request.POST.get('input')
+        input_add = request.POST.get('add')
+        # перечисляем ёбанные формы с ёбанными выпадающими списками
+
+        chosen_dict = request.POST.get('dicts_name')
+        if chosen_dict == '1':
+            chosen_university = request.POST.get('university_name')  # значение с ёбанного выпадающего списка №4
+            #  -------------------------------------------------------------------------------------------------
+            #  в каждом цикле if будет такой фрагмент с обращением к различным спискам
+            if input_add is not None:
+                sql = "INSERT INTO `npo`.`university` (`university_name`) VALUES ('" + input_value["input"] + "');"
+                # команда добавить и что добавить
+                mycoursor.execute(sql)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            else:
+                sql = "UPDATE npo.university SET university_name = %s WHERE id = %s"  # команда обновить
+                val = (input_value_upd, chosen_university)  # что обновить
+                mycoursor.execute(sql, val)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            #  -------------------------------------------------------------------------------------------------
+        if chosen_dict == '2':
+            chosen_chair = request.POST.get('chair_name')  # принимаем значение с ёбанного выпадающего списка №1
+            #  -------------------------------------------------------------------------------------------------
+            #  в каждом цикле if будет такой фрагмент с обращением к различным спискам
+            if input_add is not None:
+                sql = "INSERT INTO `npo`.`chair` (`chair_name`) VALUES ('" + input_value["input"] + "');"
+                # команда добавить и что добавить
+                mycoursor.execute(sql)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            else:
+                sql = "UPDATE npo.chair SET chair_name = %s WHERE id = %s"  # команда обновить
+                val = (input_value_upd, chosen_chair)  # что обновить
+                mycoursor.execute(sql, val)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            #  -------------------------------------------------------------------------------------------------
+        if chosen_dict == '3':
+            chosen_academy_rank = request.POST.get('academy_rank_name')  # значение с ёбанного выпадающего списка №2
+            #  -------------------------------------------------------------------------------------------------
+            #  в каждом цикле if будет такой фрагмент с обращением к различным спискам
+
+            if input_add is not None:
+                sql = "INSERT INTO `npo`.`academy_rank` (`academy_rank_name`) VALUES ('" + input_value["input"] + "');"
+                # команда добавить и что добавить
+                mycoursor.execute(sql)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            else:
+                sql = "UPDATE npo.academy_rank SET academy_rank_name = %s WHERE id = %s"  # команда обновить
+                val = (input_value_upd, chosen_academy_rank)  # что обновить
+                mycoursor.execute(sql, val)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            #  -------------------------------------------------------------------------------------------------
+        if chosen_dict == '4':
+            chosen_phd = request.POST.get('phd_name')  # значение с ёбанного выпадающего списка №3
+            #  -------------------------------------------------------------------------------------------------
+            #  в каждом цикле if будет такой фрагмент с обращением к различным спискам
+            if input_add is not None:
+                sql = "INSERT INTO `npo`.`phd` (`phd_name`) VALUES ('" + input_value["input"] + "');"
+                # команда добавить и что добавить
+                mycoursor.execute(sql)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            else:
+                sql = "UPDATE npo.phd SET phd_name = %s WHERE id = %s"  # команда обновить
+                val = (input_value_upd, chosen_phd)  # что обновить
+                mycoursor.execute(sql, val)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            #  -------------------------------------------------------------------------------------------------
+        if chosen_dict == '5':
+            chosen_course_type = request.POST.get('course_type_name')  # значение с ёбанного выпадающего списка №5
+            #  -------------------------------------------------------------------------------------------------
+            #  в каждом цикле if будет такой фрагмент с обращением к различным спискам
+            if input_add is not None:
+                sql = "INSERT INTO `npo`.`course_type` (`course_type_name`) VALUES ('" + input_value["input"] + "');"
+                # команда добавить и что добавить
+                mycoursor.execute(sql)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            else:
+                sql = "UPDATE npo.course_type SET course_type_name = %s WHERE id = %s"  # команда обновить
+                val = (input_value_upd, chosen_course_type)  # что обновить
+                mycoursor.execute(sql, val)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            #  -------------------------------------------------------------------------------------------------
+        if chosen_dict == '6':
+            chosen_realisation_form = request.POST.get(
+                'realization_form_name')  # значение с ёбанного выпадающего списка №6
+            #  -------------------------------------------------------------------------------------------------
+            #  в каждом цикле if будет такой фрагмент с обращением к различным спискам
+            if input_add is not None:
+                sql = "INSERT INTO `npo`.`realisation_form` (`realisation_form_name`) " \
+                      "VALUES ('" + input_value["input"] + "');"
+                # команда добавить и что добавить
+                mycoursor.execute(sql)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            else:
+                sql = "UPDATE npo.realisation_form SET realisation_form_name = %s WHERE id = %s"  # команда обновить
+                val = (input_value_upd, chosen_realisation_form)  # что обновить
+                mycoursor.execute(sql, val)  # выполнение обновления
+                data_base.commit()  # подтверждение
+            #  -------------------------------------------------------------------------------------------------
+        return http.HttpResponseRedirect('')
+    return render(request, 'dicts/dicts.html', locals())
 
 
 #  -------------------------------------------------------------------------------------------------
@@ -335,9 +487,13 @@ def update_dicts(request):
 # метод страницы обновления содержимого в словарях(выпадающих списках)
 #  -------------------------------------------------------------------------------------------------
 def add_educ(request):
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь не авторизован - его автоматически
+    #  направляет на страницу авторизации
     if not request.user.is_authenticated:
         return auth(request)
-    return render(request, '', locals())
+    #  ---------------------------------------------------------------------------------------------
+    return render(request, 'educ/educ.html', locals())
 
 
 #
