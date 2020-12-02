@@ -17,12 +17,12 @@
         </a>
     {% endif %}
 
-    <div class="sidebar-nav" style="right: auto">
+    <div class="grid-container-navbar" style="right: auto">
         {% if user.is_authenticated %}
-            <div>Вы вошли как: {{ user.get_username }}</div>
-            <div><a style="color: aliceblue" href="{% url 'logout' %}?next={{ request.path }}">Выйти</a></div>
+            <div style="text-align: right; grid-area: column1">Вы вошли как: {{ user.get_username }}</div>
+            <div style="grid-area: column3"><a style="color: aliceblue" href="{% url 'logout' %}?next={{ request.path }}">Выйти</a></div>
         {% else %}
-            <div><a style="color: aliceblue" href="{% url 'login' %}?next={{ request.path }}">Войти</a></div>
+            <div style="grid-area: column3"><a style="color: aliceblue" href="{% url 'login' %}?next={{ request.path }}">Войти</a></div>
         {% endif %}
     </div>
 </nav>

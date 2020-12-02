@@ -6,6 +6,7 @@ import mysql.connector
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group, Permission, User
 from django.shortcuts import get_object_or_404
+from Login.DB_methods import add_educ
 
 #  -------------------------------------------------------------------------------------------------
 #  -------------------------------------------------------------------------------------------------
@@ -264,7 +265,8 @@ def update(request):
                     sql_update = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
                                  "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
                                  "students.diplom, students.contract_expire, students.education_year, students.fired" \
-                                 " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s" \
+                                 " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s " \
+                                 "and name = %s" \
                                  "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
                                  "and students.academy_rank = academy_rank.id"
                     val_update = (surname, name, middle_name)
@@ -297,6 +299,7 @@ def delete(request):
         name = request.POST.get('name')
         middle_name = request.POST.get('middle_name')
         chosen_id = request.POST.get('id')
+        print(request.POST)
 
         if chosen_id is not None:
             print(chosen_id)
@@ -325,7 +328,7 @@ def delete(request):
                 mycoursor.execute(sql_search_delete, val_search_delete)
 
             else:
-                if middle_name == "":
+                if middle_name == '':
 
                     sql_search_delete = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
                                         "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
@@ -494,7 +497,6 @@ def add_educ(request):
         return auth(request)
     #  ---------------------------------------------------------------------------------------------
     return render(request, 'educ/educ.html', locals())
-
 
 #
 #

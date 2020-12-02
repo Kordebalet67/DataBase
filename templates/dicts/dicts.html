@@ -7,11 +7,15 @@
 
 {% block content %}
     <h1 style="color: #06869a;">Изменение пунктов выпадающих списков</h1>
-    <div class="container">
+    <h2 style="color: #06869a; font-size: 16px">Для изменения значения пункта в выпадающем списке выберите список, который Вы будете изменять,
+    а затем выберите пункт выпадающего списка. Для добавления нового пункта выберите только список и поставьте
+        отметку в пункте "Добавить значение?"
+    </h2>
+    <div class="container" style="top: 100px">
         <div class="col-lg-5 col-lg-offset-1">
             <div>
                 <form style="color: #06869a" action="" method="post">{% csrf_token %}
-                    <div class="grid-container-insert">
+                    <div class="grid-container-dict">
                         <div style="grid-area: column1; padding-right: 80px; padding-top: 30px">
                             <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Изменяемый список: </label>
@@ -25,6 +29,7 @@
                                 <label>Добавить значение?: </label>
                                 {{ input_form.add }}
                             </div>
+                        </div>
                             <div style="grid-area: column2; padding-left:80px;padding-top: 30px">
                                 <form action="" method="post">{% csrf_token %}
                                     <div style="display: flex; justify-content: space-between;padding-top: 10px">
@@ -55,7 +60,6 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
                 </form>
             </div>
         </div>

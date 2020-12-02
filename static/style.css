@@ -236,3 +236,35 @@ table.result th {
     grid-template-rows: repeat(2, 200px);
     grid-template-columns: repeat(2, 380px);
 }
+
+.grid-container-navbar {
+    display: grid;
+
+    font-size: 18px;
+    line-height: 2.8;
+
+    float: right;
+
+    grid-template-areas: "column1 column2 column3";
+    grid-template-columns: 300px 20px 100px;
+}
+
+.grid-container-dict {
+    display: grid;
+    padding-top: 10%;
+
+    grid-template-areas: "column1 column3 column2";
+    grid-template-rows: repeat(2, 200px);
+    grid-template-columns: 420px 70% 400px;
+}
+
+.grid-container-delete {
+    display: grid;
+
+    color: #06869a;
+
+    grid-template-areas: "column1 column2"
+                        "column3 column4";
+    grid-template-rows: repeat(2, 160px);
+    grid-template-columns: 350px 800px;
+}
