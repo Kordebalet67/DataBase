@@ -112,6 +112,15 @@
     width: 248px;
 }
 
+.btn22 {
+    display: inline;
+    position: relative;
+    top: -33.5px;
+    width: 200px;
+    left: 220px;
+    margin-top: 10px;
+}
+
 .btn23 {
     display: inline;
     position: relative;
@@ -222,8 +231,7 @@ table.result th {
 .grid-container-update {
     display: grid;
 
-    grid-template-areas: "column1 column2"
-                        "column3 column4";
+    grid-template-areas: "column1 column2" "column3 column4";
     grid-template-rows: repeat(2, 160px);
     grid-template-columns: 350px 800px;
 }
@@ -238,15 +246,18 @@ table.result th {
 }
 
 .grid-container-navbar {
-    display: grid;
+    display: inline-grid;
+    width: 100%;
 
     font-size: 18px;
     line-height: 2.8;
 
     float: right;
 
-    grid-template-areas: "column1 column2 column3";
-    grid-template-columns: 300px 20px 100px;
+    grid-template-areas: "column1 column2 column3 column4 column5 column6 column7 column8 column9";
+    grid-template-columns: 10% 10% 10% 10% 10% 8% 30% 2% 10%;
+    text-align: center;
+
 }
 
 .grid-container-dict {
@@ -263,8 +274,57 @@ table.result th {
 
     color: #06869a;
 
-    grid-template-areas: "column1 column2"
-                        "column3 column4";
+    grid-template-areas: "column1 column2" "column3 column4";
     grid-template-rows: repeat(2, 160px);
     grid-template-columns: 350px 800px;
+}
+
+
+#navbar ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+}
+
+#navbar li:hover ul {
+    display: block;
+}
+
+#navbar, #navbar ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+#navbar {
+    height: 30px;
+    padding-left: 25px;
+    min-width: 470px;
+}
+
+#navbar li {
+    float: left;
+    position: relative;
+    height: 100%;
+}
+
+#navbar li a {
+    display: block;
+    width: 100px;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+}
+
+#navbar ul li {
+    float: none;
+    padding-top: 15px
+}
+
+#navbar ul li a {
+    width: 300px;
+    font-size: 16px;
+    line-height: 1.2;
+    background-color: #337ab7;
+    border-radius: 8px;
 }

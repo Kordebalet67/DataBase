@@ -15,15 +15,15 @@
                             <form action="" method="post">{% csrf_token %}
                                 <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Фамилия: </label>
-                                    {{ insert_form.surname }}
+                                    {{ search_form.surname }}
                                 </div>
                                 <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Имя: </label>
-                                    {{ insert_form.name }}
+                                    {{ search_form.name }}
                                 </div>
                                 <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Отчество: </label>
-                                    {{ insert_form.middle_name }}
+                                    {{ search_form.middle_name }}
                                 </div>
 
                                 <input type="submit" value="Поиск" class="btn23 btn btn-primary"/>
@@ -70,8 +70,8 @@
                             <form action="" method="post" style="padding-top: 10%">{% csrf_token %}
                                 <div>
                                     <label>ID изменяемого студента: </label>
-                                    <input {{ id }} >
-                                    <input type="submit" value="Подтвердить" class="btn23 btn btn-primary"/>
+                                    {{ id_form.id }}
+                                    <input type="submit" value="Подтвердить и изменить" class="btn23 btn btn-primary"/>
                                 </div>
                             </form>
                         </div>
@@ -148,8 +148,6 @@
                                             <label>Форма реализации: </label>
                                             {{ realisation_form_form.realization_form_name }}
                                         </div>
-                                        <input type="submit" value="Подтвердить и добавить"
-                                               class="btn23 btn btn-primary"/>
                                     </form>
                                 </div>
                             </div>

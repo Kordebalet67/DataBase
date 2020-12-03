@@ -6,7 +6,6 @@ import mysql.connector
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group, Permission, User
 from django.shortcuts import get_object_or_404
-from Login.DB_methods import add_educ
 
 #  -------------------------------------------------------------------------------------------------
 #  -------------------------------------------------------------------------------------------------
@@ -157,7 +156,14 @@ def search(request):
     #  ---------------------------------------------------------------------------------------------
     insert_form = Ext_Students_Form(request.POST or None)
 
-    if request.method == "POST":
+    if request.method == "GET":
+        mycoursor.execute("select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                     "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                     "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                     " from npo.students, npo.chair, npo.phd, npo.academy_rank where students.chair = chair.id " \
+                     "and students.phd = phd.id and students.academy_rank = academy_rank.id")
+        results = mycoursor.fetchall()
+    elif request.method == "POST":
         surname = request.POST.get('surname')  # принимаем значение с ёбанной заполняемой формы
         name = request.POST.get('name')
         middle_name = request.POST.get('middle_name')
@@ -216,16 +222,9 @@ def update(request):
     if not request.user.is_authenticated:
         return auth(request)
     #  ---------------------------------------------------------------------------------------------
-    insert_form = Ext_Students_Form(request.POST or None)
+
+    search_form = Ext_Students_Form(request.POST or None)
     id_form = ID_choose_form(request.POST or None)
-    education_form = Education_Form((request.POST or None))
-    # перечисляем ёбанные формы для заполнения. ещё 6  - с ёбанными выпадающими списками
-    university_form = University_form
-    course_type_form = Course_type_form
-    realisation_form_form = Realisation_form_form  # гореть мне в аду за такие названия
-    chair_form = Chair_form
-    phd_form = PHD_form
-    academy_rank_form = Academy_rank_form
 
     if request.method == "POST":
         surname = request.POST.get('surname')  # принимаем значение с ёбанной заполняемой формы
@@ -233,9 +232,31 @@ def update(request):
         middle_name = request.POST.get('middle_name')
         chosen_id = request.POST.get('id')
 
+        #  ---------------------------------------------------------------------------------------------
+        #  Если пользователь ввёл данные для поиска и нажал найти, то вместе с выдачей результатов поиска
+        #  ему открывается форма для внесения изменений
+        #  ---------------------------------------------------------------------------------------------
+        insert_form = Ext_Students_Form(request.POST or None)
+        education_form = Education_Form((request.POST or None))
+        # перечисляем ёбанные формы для заполнения. ещё 6  - с ёбанными выпадающими списками
+        university_form = University_form
+        course_type_form = Course_type_form
+        realisation_form_form = Realisation_form_form  # гореть мне в аду за такие названия
+        chair_form = Chair_form
+        phd_form = PHD_form
+        academy_rank_form = Academy_rank_form
+
+        #  ---------------------------------------------------------------------------------------------
+        #  проверка на выбранный ид
+        #  если выбран, то выкидываем форму для внесения изменения
+        #  ---------------------------------------------------------------------------------------------
+
         if chosen_id is not None:
             print(chosen_id)
 
+        #  ---------------------------------------------------------------------------------------------
+        #   если не выбран ид, то просто выводим результат запроса
+        #  ---------------------------------------------------------------------------------------------
         else:
             if middle_name == '' and name == '':
 
@@ -497,6 +518,7 @@ def add_educ(request):
         return auth(request)
     #  ---------------------------------------------------------------------------------------------
     return render(request, 'educ/educ.html', locals())
+
 
 #
 #
