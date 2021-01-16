@@ -24,6 +24,13 @@ realisation_form = mycoursor.fetchall()
 mycoursor.execute("SELECT * FROM university")
 university = mycoursor.fetchall()
 
+# создание выпадающего списка из таблицы students с контекстным поиском
+mycoursor.execute("select id, surname, name, middle_name from students")
+curr_list = mycoursor.fetchall()
+
+
+# print(curr_list[1])
+
 
 class Users(models.Model):
     login = models.CharField(max_length=256)
@@ -76,6 +83,15 @@ list_phd = []
 for i in range(len(phd)):  # запихиваем ёбанные значения из списка словарей в список ёбанных кортежей
     list_phd.append((phd[i]["id"], phd[i]["phd_name"]))
 
+#  выпадающий список с контекстом
+fio_list = []
+for i in range(len(curr_list)):
+    fio_list.append(
+        (curr_list[i]["id"], curr_list[i]["surname"] + ' ' + curr_list[i]["name"] + ' ' + curr_list[i]["middle_name"]))
+
+
+# print(fio_list)
+
 
 # print(chair[0]["chair_name"])  # самая важная хуйня во всём коде. из мускла сюда приходит список словарей. ИПАНУЦЦА
 # print(list_chair)
@@ -83,7 +99,7 @@ for i in range(len(phd)):  # запихиваем ёбанные значени�
 
 class Chair(models.Model):
     id = models.IntegerField(primary_key=True)
-    chair_name = models.CharField(max_length=100, choices=list_chair, default=None)
+    chair_name = models.CharField(max_length=100, choices=list_chair, default=list_chair[0])
 
     def __str__(self):
         return self.chair_name
@@ -91,7 +107,7 @@ class Chair(models.Model):
 
 class PHD(models.Model):
     id = models.IntegerField(primary_key=True)
-    phd_name = models.CharField(max_length=100, choices=list_phd, default=None)
+    phd_name = models.CharField(max_length=100, choices=list_phd, default=list_phd[0])
 
     def __str__(self):
         return self.phd_name
@@ -99,7 +115,7 @@ class PHD(models.Model):
 
 class Academy_rank(models.Model):
     id = models.IntegerField(primary_key=True)
-    academy_rank_name = models.CharField(max_length=100, choices=list_academy_rank, default=None)
+    academy_rank_name = models.CharField(max_length=100, choices=list_academy_rank, default=list_academy_rank[0])
 
     def __str__(self):
         return self.academy_rank_name
@@ -121,7 +137,8 @@ for i in range(len(realisation_form)):  # запихиваем ёбанные з
 
 class Realization_form(models.Model):
     id = models.IntegerField(primary_key=True)
-    realization_form_name = models.CharField(max_length=100, choices=list_realisation_form, default=None)
+    realization_form_name = models.CharField(max_length=100, choices=list_realisation_form,
+                                             default=list_realisation_form[0])
 
     def __str__(self):
         return self.realization_form_name
@@ -129,7 +146,7 @@ class Realization_form(models.Model):
 
 class Course_type(models.Model):
     id = models.IntegerField(primary_key=True)
-    course_type_name = models.CharField(max_length=100, choices=list_course_type, default=None)
+    course_type_name = models.CharField(max_length=100, choices=list_course_type, default=list_course_type[0])
 
     def __str__(self):
         return self.course_type_name
@@ -137,13 +154,19 @@ class Course_type(models.Model):
 
 class University(models.Model):
     id = models.IntegerField(primary_key=True)
-    university_name = models.CharField(max_length=100, choices=list_university, default=None)
+    university_name = models.CharField(max_length=100, choices=list_university, default=list_university[0])
 
     def __str__(self):
         return self.university_name
 
 
-#  моделей для выбора пользователя
+#  описание модели контекстного поиска из выпадающего списка
+class Context_Search(models.Model):
+    id = models.IntegerField(primary_key=True)
+    fio = models.CharField(max_length=200, choices=fio_list, default=None)
+
+
+#  модель для выбора пользователя
 class ID(models.Model):
     id = models.IntegerField(primary_key=True)
 

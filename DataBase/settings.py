@@ -24,7 +24,9 @@ SECRET_KEY = 'md4rtxnj03afsb2kq$21vx!49l=*$wtrsd^*5*%wh-%j-91#-0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    #  добавить адрес компа, на котором будет развёрнут сервер
+]
 
 # Application definition
 

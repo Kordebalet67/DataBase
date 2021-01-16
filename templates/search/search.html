@@ -5,8 +5,10 @@
 {% endblock title %}
 
 {% block content %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.min.css">
+
     <h1 style="color: #06869a">Поиск информации о студенте</h1>
-    <h2 style="color: #06869a; font-size: 16px">Для корректного поиска введите минимум первые 3 буквы фамилии либо имени или отчества</h2>
+    <h2 style="color: #06869a; font-size: 16px">Для корректного поиска начните вводить данные</h2>
     <div class="container" style="top: 100px;">
         <div class="col-lg-1 col-lg-offset-0">
             <div>
@@ -14,22 +16,54 @@
                     <div class="grid-container-search">
                         <div style="grid-area: column1">
                             <form action="" method="post">{% csrf_token %}
-                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
-                                    <label>Фамилия: </label>
-                                    {{ insert_form.surname }}
-                                </div>
-                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
-                                    <label>Имя: </label>
-                                    {{ insert_form.name }}
-                                </div>
-                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
-                                    <label>Отчество: </label>
-                                    {{ insert_form.middle_name }}
+                                <div>
+                                    <div style="width:520px;margin:0px auto;margin-top:30px;">
+                                        <label>
+                                            <select id="ls" class="livesearch" style="width:300px;">
+                                                {% for x in myres %}
+                                                    {% for y in x %}
+                                                        <option value="{{ y }}">{{ y }}</option>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </select>
+                                        </label>
+                                    </div>
+
+
                                 </div>
 
-                                <input type="submit" value="Поиск" class="btn23 btn btn-primary"/>
-                                <input type="submit" formmethod="get" id="get_all" value="Показать всех"
-                                       class="btn22 btn btn-primary"/>
+                                <input type="submit" onclick="a()" id="get" value="Поиск"
+                                       class="btn23 btn btn-primary"/>
+                                <input type="submit" onclick="b()" formmethod="get" id="get_all" value="Показать всех"
+                                       class="btn22 btn btn-primary" style="top: 15px"/>
+
+
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
+                                <script type="text/javascript">
+
+
+                                    $(".livesearch").chosen();
+
+                                    <!-- функции перехвата выбранной позиции из поиска -->
+                                    function a() {
+                                        var a = $(".livesearch").chosen().val();
+                                        alert(a);
+                                        document.getElementById('in').value = a;
+                                    }
+
+                                    function b() {
+                                        var b = $(".livesearch").chosen().val();
+                                        alert(b);
+                                        document.getElementById('in').value = b;
+                                    }
+
+
+                                </script>
+
+
+                                <input formmethod="post" type="hidden" name="chosen" id="in" value="">
+
                             </form>
                         </div>
                         <div style="grid-area: column2">
@@ -40,13 +74,14 @@
                                         <th>Имя</th>
                                         <th>Отчество</th>
                                         <th>Кафедра</th>
-                                        <th>Должность</th>
-                                        <th>Учёная степень</th>
-                                        <th>Учёное звание</th>
-                                        <th>Диплом</th>
-                                        <th>Окончание контракта</th>
-                                        <th>Год выпуска</th>
-                                        <th>Статус</th>
+                                        <th>ВУЗ</th>
+                                        <th>Тип курсов</th>
+                                        <th>Форма реализации</th>
+                                        <th>Инфо из ВУЗа</th>
+                                        <th>Название курсов</th>
+                                        <th>Начало курсов</th>
+                                        <th>Окончание курсов</th>
+                                        <th>Инфо</th>
                                     </tr>
 
                                     {% for x in results %}

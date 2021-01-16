@@ -47,7 +47,7 @@
                                 {{ insert_form.fired }}
                             </div>
                         </div>
-                        <div style="grid-area: column2; padding-left:40px;padding-top: 30px">
+                        {% comment %}<div style="grid-area: column2; padding-left:40px;padding-top: 30px">
                             <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                 <label>Информация из университета: </label>
                                 {{ education_form.university_text }}
@@ -68,13 +68,9 @@
                                 <label>Дополнительная информация: </label>
                                 {{ education_form.info }}
                             </div>
-                        </div>
-                        <div style="grid-area: column3; padding-left:80px;padding-top: 30px">
+                        </div>{% endcomment %}
+                        <div style="grid-area: column2; padding-left:80px;padding-top: 30px">
                             <form action="" method="post">{% csrf_token %}
-                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
-                                    <label>ВУЗ: </label>
-                                    {{ university_form.university_name }}
-                                </div>
                                 <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Кафедра: </label>
                                     {{ chair_form.chair_name }}
@@ -85,7 +81,11 @@
                                 </div>
                                 <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Учёное звание: </label>
-                                    {{ academy_rank_form.academy_rank_name }}
+                                    <p>{{ academy_rank_form.academy_rank_name }}</p>
+                                </div>
+                                {% comment %}<div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                    <label>ВУЗ: </label>
+                                    {{ university_form.university_name }}
                                 </div>
                                 <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Форма обучения: </label>
@@ -94,8 +94,8 @@
                                 <div style="display: flex; justify-content: space-between;padding-top: 10px">
                                     <label>Форма реализации: </label>
                                     {{ realisation_form_form.realization_form_name }}
-                                </div>
-                                <input type="submit" value="Подтвердить и добавить" class="btn23 btn btn-primary"/>
+                                </div>{% endcomment %}
+                                <input type="submit" value="Подтвердить и добавить" class="btn_insert btn btn-primary"/>
                             </form>
                         </div>
                     </div>

@@ -12,21 +12,48 @@
                 <form style="color: #06869a" action="" method="post">{% csrf_token %}
                     <div class="grid-container-search">
                         <div style="grid-area: column1">
-                            <form action="" method="post">{% csrf_token %}
-                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
-                                    <label>Фамилия: </label>
-                                    {{ insert_form.surname }}
+                            <form action="" method="post" style="padding-top: 10%; width: 100px">{% csrf_token %}
+                                <div style="padding-left:10px;padding-right: 50px;padding-bottom: 40px">
+                                    <!-- сюда вставить формы обучения -->
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Информация из университета: </label>
+                                        {{ education_form.university_text }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Название курса: </label>
+                                        {{ education_form.course_name }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Дата начала курса: </label>
+                                        {{ education_form.course_start }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Дата окончания курса: </label>
+                                        {{ education_form.course_end }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Дополнительная информация: </label>
+                                        {{ education_form.info }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>ВУЗ: </label>
+                                        {{ university_form.university_name }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Форма обучения: </label>
+                                        {{ course_type_form.course_type_name }}
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;padding-top: 10px">
+                                        <label>Форма реализации: </label>
+                                        {{ realisation_form_form.realization_form_name }}
+                                    </div>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
-                                    <label>Имя: </label>
-                                    {{ insert_form.name }}
+                                <div style="padding-left: 10px">
+                                    <label>ID нужного человека: </label>
+                                    {{ id_form.id }}
+                                    <input type="submit" value="Подтвердить" class="btn30 btn btn-primary"/>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;padding-top: 10px">
-                                    <label>Отчество: </label>
-                                    {{ insert_form.middle_name }}
-                                </div>
-
-                                <input type="submit" value="Поиск" class="btn23 btn btn-primary"/>
+                                <div style="height: 50px; padding-top: 10px"></div>
                             </form>
                         </div>
                         <div style="grid-area: column2">
@@ -44,6 +71,7 @@
                                         <th>Окончание контракта</th>
                                         <th>Год выпуска</th>
                                         <th>Статус</th>
+                                        <th>ID</th>
                                     </tr>
 
                                     {% for x in results %}
@@ -61,8 +89,6 @@
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}
-
-
                                 </table>
                             </div>
                         </div>

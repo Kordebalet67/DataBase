@@ -90,3 +90,9 @@ class Dicts_form(forms.ModelForm):
     class Meta:
         model = Dicts
         fields = ['dicts_name']
+
+
+class Context_Search_form(forms.ModelForm):
+    class Meta:
+        model = Context_Search
+        fields = ["fio"]

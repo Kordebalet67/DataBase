@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.utils import http
+from django.template import RequestContext, loader
 from django import http
+from django.http import HttpResponse
 from .forms import *
 import mysql.connector
 from django.contrib.auth import authenticate, login, logout
@@ -94,9 +96,6 @@ def insert_education(request):
     insert_form = Ext_Students_Form(request.POST or None)
     education_form = Education_Form((request.POST or None))
     # перечисляем ёбанные формы для заполнения. ещё 6  - с ёбанными выпадающими списками
-    university_form = University_form
-    course_type_form = Course_type_form
-    realisation_form_form = Realisation_form_form  # гореть мне в аду за такие названия
     chair_form = Chair_form
     phd_form = PHD_form
     academy_rank_form = Academy_rank_form
@@ -128,19 +127,11 @@ def insert_education(request):
 
         mycoursor.execute(sql_stud, val_stud)
         data_base.commit()
-
-        sql_ed = "insert into npo.education (student, course_type, university, university_text, course_name, " \
-                 "course_start, course_end, realisation_form, chair, info)" \
-                 "values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        val_ed = (stud, chosen_course_type, chosen_university, data_ed["university_text"], data_ed["course_name"],
-                  data_ed["course_start"], data_ed["course_end"], chosen_realisation_form, chosen_chair,
-                  data_ed["info"])
-
-        mycoursor.execute(sql_ed, val_ed)
-        data_base.commit()
-
         print(mycoursor.rowcount, "record inserted")
-        return http.HttpResponseRedirect('')
+
+        insert_form = Ext_Students_Form()
+        return render(request, 'insert/insert_education.html', locals())
+
     return render(request, 'insert/insert_education.html', locals())
 
 
@@ -155,18 +146,142 @@ def search(request):
         return auth(request)
     #  ---------------------------------------------------------------------------------------------
     insert_form = Ext_Students_Form(request.POST or None)
+    context_form = Context_Search_form(request.POST or None)
+    # print(context_form["fio"][1])
+
+    mycoursor.execute("select concat(surname, ' ', name, ' ', middle_name ) as fio from npo.students"
+                      " order by surname, name, middle_name")
+    myres = mycoursor.fetchall()
+    # print(myres[1][0])
+    # print(request.POST.get('chosen'))
 
     if request.method == "GET":
-        mycoursor.execute("select students.surname, students.name, students.middle_name, chair.chair_name, " \
-                     "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
-                     "students.diplom, students.contract_expire, students.education_year, students.fired" \
-                     " from npo.students, npo.chair, npo.phd, npo.academy_rank where students.chair = chair.id " \
-                     "and students.phd = phd.id and students.academy_rank = academy_rank.id")
-        results = mycoursor.fetchall()
+        if request.GET.get('chosen') is not None:
+            fio = request.GET.get('chosen')  # принимаем значение с ёбанного выпадающего списка
+            fio1 = fio.split()
+            surname = fio1[0]
+            name = fio1[1]
+            middle_name = fio1[2]
+            #  ---------------------------------------------------------------------------------------------
+            #  через условия делаю несколько вариантов запроса
+
+            if surname != "":
+
+                if name != "" and middle_name != "":
+
+                    sql_search = "select s.surname, s.name, s.middle_name, chair.chair_name, university_name, course_type_name, \
+                                    realisation_form_name, university_text, course_name, course_start, course_end, info " \
+                                 "from (((((education e join students s on e.student=s.id)" \
+                                 "left join course_type ct on e.course_type=ct.id)" \
+                                 "left join university u on e.university=u.id)" \
+                                 "left join realisation_form r on e.realisation_form=r.id)" \
+                                 "join chair on chair.id=s.chair)" \
+                                 "where ct.id in (select " \
+                                 "ct.id from (((((education e join students s on e.student=s.id) " \
+                                 "left join course_type ct on e.course_type = ct.id) " \
+                                 "left join university u on e.university = u.id) " \
+                                 "left join realisation_form r on e.realisation_form = r.id) " \
+                                 "join chair on chair.id = s.chair) " \
+                                 "where surname = %s and name = %s and middle_name = %s)" \
+                                 "and course_start in (select " \
+                                 "course_start " \
+                                 "from (((((education e join students s on e.student=s.id) " \
+                                 "left join course_type ct on e.course_type = ct.id) " \
+                                 "left join university u on e.university = u.id) " \
+                                 "left join realisation_form r on e.realisation_form = r.id) " \
+                                 "join chair on chair.id = s.chair) " \
+                                 "where surname = %s and name = %s and middle_name = %s) order by surname"
+                    val_search = (surname, name, middle_name, surname, name, middle_name)
+
+                elif name != "":
+
+                    sql_search = "select s.surname, s.name, s.middle_name, chair.chair_name, university_name, course_type_name, \
+                                                    realisation_form_name, university_text, course_name, course_start, course_end, info " \
+                                 "from (((((education e join students s on e.student=s.id)" \
+                                 "left join course_type ct on e.course_type=ct.id)" \
+                                 "left join university u on e.university=u.id)" \
+                                 "left join realisation_form r on e.realisation_form=r.id)" \
+                                 "join chair on chair.id=s.chair)" \
+                                 "where ct.id in (select " \
+                                 "ct.id from (((((education e join students s on e.student=s.id) " \
+                                 "left join course_type ct on e.course_type = ct.id) " \
+                                 "left join university u on e.university = u.id) " \
+                                 "left join realisation_form r on e.realisation_form = r.id) " \
+                                 "join chair on chair.id = s.chair) " \
+                                 "where surname = %s and name = %s)" \
+                                 "and course_start in (select " \
+                                 "course_start " \
+                                 "from (((((education e join students s on e.student=s.id) " \
+                                 "left join course_type ct on e.course_type = ct.id) " \
+                                 "left join university u on e.university = u.id) " \
+                                 "left join realisation_form r on e.realisation_form = r.id) " \
+                                 "join chair on chair.id = s.chair) " \
+                                 "where surname = %s and name = %s ) order by surname"
+                    val_search = (surname, name, surname, name)
+
+                else:
+
+                    sql_search = "select s.surname, s.name, s.middle_name, chair.chair_name, university_name, course_type_name, \
+                                                                    realisation_form_name, university_text, course_name, course_start, course_end, info " \
+                                 "from (((((education e join students s on e.student=s.id)" \
+                                 "left join course_type ct on e.course_type=ct.id)" \
+                                 "left join university u on e.university=u.id)" \
+                                 "left join realisation_form r on e.realisation_form=r.id)" \
+                                 "join chair on chair.id=s.chair)" \
+                                 "where ct.id in (select " \
+                                 "ct.id from (((((education e join students s on e.student=s.id) " \
+                                 "left join course_type ct on e.course_type = ct.id) " \
+                                 "left join university u on e.university = u.id) " \
+                                 "left join realisation_form r on e.realisation_form = r.id) " \
+                                 "join chair on chair.id = s.chair) " \
+                                 "where surname = %s)" \
+                                 "and course_start in (select " \
+                                 "course_start " \
+                                 "from (((((education e join students s on e.student=s.id) " \
+                                 "left join course_type ct on e.course_type = ct.id) " \
+                                 "left join university u on e.university = u.id) " \
+                                 "left join realisation_form r on e.realisation_form = r.id) " \
+                                 "join chair on chair.id = s.chair) " \
+                                 "where surname = %s ) order by surname"
+                    val_search = (surname, surname)
+
+            elif name != "" and middle_name != "":
+
+                sql_search = "select s.surname, s.name, s.middle_name, chair.chair_name, university_name, course_type_name, \
+                                                realisation_form_name, university_text, course_name, course_start, course_end, info " \
+                             "from (((((education e join students s on e.student=s.id)" \
+                             "left join course_type ct on e.course_type=ct.id)" \
+                             "left join university u on e.university=u.id)" \
+                             "left join realisation_form r on e.realisation_form=r.id)" \
+                             "join chair on chair.id=s.chair)" \
+                             "where ct.id in (select " \
+                             "ct.id from (((((education e join students s on e.student=s.id) " \
+                             "left join course_type ct on e.course_type = ct.id) " \
+                             "left join university u on e.university = u.id) " \
+                             "left join realisation_form r on e.realisation_form = r.id) " \
+                             "join chair on chair.id = s.chair) " \
+                             "where name = %s and middle_name = %s)" \
+                             "and course_start in (select " \
+                             "course_start " \
+                             "from (((((education e join students s on e.student=s.id) " \
+                             "left join course_type ct on e.course_type = ct.id) " \
+                             "left join university u on e.university = u.id) " \
+                             "left join realisation_form r on e.realisation_form = r.id) " \
+                             "join chair on chair.id = s.chair) " \
+                             "where name = %s and middle_name = %s) order by surname"
+                val_search = (name, middle_name, name, middle_name)
+
+            mycoursor.execute(sql_search, val_search)
+
+            results = mycoursor.fetchall()
+            return render(request, 'search/search.html', locals())
+
     elif request.method == "POST":
-        surname = request.POST.get('surname')  # принимаем значение с ёбанной заполняемой формы
-        name = request.POST.get('name')
-        middle_name = request.POST.get('middle_name')
+        fio = request.POST.get('chosen')  # принимаем значение с ёбанного выпадающего списка
+        fio1 = fio.split()
+        surname = fio1[0]
+        name = fio1[1]
+        middle_name = fio1[2]
 
         if middle_name == '' and name == '':
 
@@ -175,7 +290,7 @@ def search(request):
                          "students.diplom, students.contract_expire, students.education_year, students.fired" \
                          " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s" \
                          " and students.chair = chair.id and students.phd = phd.id " \
-                         "and students.academy_rank = academy_rank.id"
+                         "and students.academy_rank = academy_rank.id order by surname"
             val_search = (surname,)
             mycoursor.execute(sql_search, val_search)
 
@@ -187,8 +302,19 @@ def search(request):
                              "students.diplom, students.contract_expire, students.education_year, students.fired" \
                              " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s " \
                              "and name = %s and students.chair = chair.id and students.phd = phd.id " \
-                             "and students.academy_rank = academy_rank.id"
+                             "and students.academy_rank = academy_rank.id order by surname"
                 val_search = (surname, name)
+                mycoursor.execute(sql_search, val_search)
+
+            elif surname == "":
+
+                sql_search = "select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                             "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                             "students.diplom, students.contract_expire, students.education_year, students.fired" \
+                             " from npo.students, npo.chair, npo.phd, npo.academy_rank where name = %s " \
+                             "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
+                             "and students.academy_rank = academy_rank.id order by surname"
+                val_search = (name, middle_name)
                 mycoursor.execute(sql_search, val_search)
 
             else:
@@ -198,13 +324,40 @@ def search(request):
                              "students.diplom, students.contract_expire, students.education_year, students.fired" \
                              " from npo.students, npo.chair, npo.phd, npo.academy_rank where surname = %s and name = %s" \
                              "and middle_name = %s and students.chair = chair.id and students.phd = phd.id " \
-                             "and students.academy_rank = academy_rank.id"
+                             "and students.academy_rank = academy_rank.id order by surname"
                 val_search = (surname, name, middle_name)
                 mycoursor.execute(sql_search, val_search)
 
         results = mycoursor.fetchall()
 
         return render(request, 'search/search.html', locals())
+    return render(request, 'search/search.html', locals())
+
+
+#  -------------------------------------------------------------------------------------------------
+#  -------------------------------------------------------------------------------------------------
+# метод страницы поиска по ФИО
+def search1(request):
+    #  ---------------------------------------------------------------------------------------------
+    #  проверка на авторизацию. если пользователь не авторизован - его автоматически
+    #  направляет на страницу авторизации
+    if not request.user.is_authenticated:
+        return auth(request)
+    #  ---------------------------------------------------------------------------------------------
+    insert_form = Ext_Students_Form(request.POST or None)
+
+    #  ---------------------------------------------------------------------------------------------
+    #  вытягивает список всех на курсе по ФИО
+    if request.method == "GET":
+
+        pass
+
+    #  ---------------------------------------------------------------------------------------------
+    #  поиск по введённым данным
+    elif request.method == "POST":
+
+        pass
+
     return render(request, 'search/search.html', locals())
 
 
@@ -502,7 +655,8 @@ def update_dicts(request):
                 mycoursor.execute(sql, val)  # выполнение обновления
                 data_base.commit()  # подтверждение
             #  -------------------------------------------------------------------------------------------------
-        return http.HttpResponseRedirect('')
+        input_form = Inout_form()
+        return render(request, 'dicts/dicts.html', locals())
     return render(request, 'dicts/dicts.html', locals())
 
 
@@ -517,6 +671,39 @@ def add_educ(request):
     if not request.user.is_authenticated:
         return auth(request)
     #  ---------------------------------------------------------------------------------------------
+    id_form = ID_choose_form(request.POST or None)
+    education_form = Education_Form((request.POST or None))
+    course_type_form = Course_type_form
+    realisation_form_form = Realisation_form_form  # гореть мне в аду за такие названия
+    university_form = University_form
+
+    mycoursor.execute("select students.surname, students.name, students.middle_name, chair.chair_name, " \
+                      "students.work_position, phd.phd_name, academy_rank.academy_rank_name," \
+                      "students.diplom, students.contract_expire, students.education_year, students.fired," \
+                      "students.id from npo.students, npo.chair, npo.phd, npo.academy_rank where students.chair = chair.id " \
+                      "and students.phd = phd.id and students.academy_rank = academy_rank.id")
+    results = mycoursor.fetchall()
+
+    if request.method == "POST" and id_form.is_valid() and education_form.is_valid():
+        data_ed = education_form.cleaned_data  # принимаем значение с ёбанной заполняемой формы учёбы
+        stud_id = id_form.cleaned_data
+        chosen_course_type = request.POST.get('course_type_name')  # значение с ёбанного выпадающего списка №5
+        chosen_realisation_form = request.POST.get('realization_form_name')  # значение с ёбанного выпадающего списка №6
+        chosen_university = request.POST.get('university_name')
+        sql_ed = "insert into npo.education (student, course_type, university, university_text, course_name, " \
+                 "course_start, course_end, realisation_form, info)" \
+                 "values (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val_ed = (
+            stud_id["id"], chosen_course_type, chosen_university, data_ed["university_text"], data_ed["course_name"],
+            data_ed["course_start"], data_ed["course_end"], chosen_realisation_form,
+            data_ed["info"])
+        mycoursor.execute(sql_ed, val_ed)
+        data_base.commit()
+        print(mycoursor.rowcount, "record inserted")
+        id_form = ID_choose_form()
+        education_form = Education_Form()
+    #  ---------------------------------------------------------------------------------------------
+
     return render(request, 'educ/educ.html', locals())
 
 
